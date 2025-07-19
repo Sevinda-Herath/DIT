@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nebula Institute of Technology - Inner Faculty Esport Tournament </title>
+    <link rel="icon" href="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/nit-logo-small.jpg" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="loading.css">
+</head>
+<body>
+    <!-- Nav Bar -->
+    <div class="navbar">
+        <nav>
+            <ul class="nav-links">
+                <li><a class="nav active" href="#">Home</a></li>
+                <li><a class="nav gray" href="/NIT/about.html">About</a></li>
+                <li><a class="nav gray" href="/NIT/contact.html">Contact</a></li>
+                <li><a class="register-nav" href="/NIT/register.html">Signin</a></li>
+                <li><a class="register-nav" href="/NIT/register.html">Signup</a></li>
+            </ul>
+        </nav>
+    </div>
+    <!-- Home Content -->
+    <div class="content">
+        <!-- Timer -->
+        <div class="timer">
+            <h1 id ="rm">TOURNAMENT STARTS IN</h1>
+            <div id="countdown">
+                  <ul>
+                      <li><span id="days"></span>days</li>
+                      <li><span id="hours"></span>Hours</li>
+                      <li><span id="minutes"></span>Minutes</li>
+                      <li><span id="seconds"></span>Seconds</li>
+                  </ul>
+            </div>
+            <!-- Register Btn -->
+            <div class="register">
+                <a href="/NIT/register.html" class="button">REGISTER YOUR TEAM</a>
+            </div>
+        </div>
+        <!-- Sponsor Logos -->
+        <div class="brand-logos">
+            <img class="" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/NIT.png" alt="NIT Logo">
+        </div>
+        <!-- Game Logos -->
+        <div class="game-line">
+            <ol>
+                <li>
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-cs.png" alt="CS Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-cod4.png" alt="COD4 Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-valo.png" alt="Valorent Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-pubg-m.png" alt="PUBG Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-ff-m.png" alt="Free Fire Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-cod-m.png" alt="COD Mobile Logo">
+                    <img class="gl-logo" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/logo-ml-m.png" alt="Mobile Legends Logo">
+                </li>
+            </ol>
+        </div>
+    </div>
+    <script src="timer.js"></script>
+    <script src="index.js"></script>
+    <script src="loading.js"></script>
+    <!-- BG Img -->
+    <img class="bg-img" src="https://raw.githubusercontent.com/Sevinda-Herath/NIT-Esports-Inner-Fac-Website/refs/heads/main/images/Ghost-img.png" alt="Background Image">
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="terminal">
+            <div id="terminal-content"></div>
+            <div class="validator">
+                <a href="https://validator.w3.org/check?uri=https://sevinda-herath.is-a.dev/NIT/index.html" target="_blank">
+                    <img src="https://www.w3.org/Icons/valid-html401-blue" alt="Valid HTML!">
+                </a>
+                <a href="https://jigsaw.w3.org/css-validator/validator?uri=https://sevinda-herath.is-a.dev/NIT/" target="_blank">
+                    <img src="https://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!">
+                </a>    
+            </div>
+            <button id="skip-button" class="skip-button">Skip Animation</button>
+        </div>
+    </div>
+</body>
+</html>
