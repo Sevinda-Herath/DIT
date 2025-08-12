@@ -623,6 +623,69 @@ body {
 
 
 
+/*-----------------------------------*\
+  #CONTACT
+\*-----------------------------------*/
+
+.section.contact { margin-top: 20px; }
+
+.contact .contact-content {
+  display: grid;
+  gap: 30px;
+  align-items: start;
+}
+
+.contact .contact-info .social-link {
+  color: var(--text-white);
+  font-size: 2.2rem;
+  transition: var(--transition-1);
+}
+
+.contact .contact-info .social-link:is(:hover, :focus-visible) {
+  color: var(--text-purple);
+}
+
+.contact .contact-form {
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+/* Small screens: optimize spacing and widths */
+@media (max-width: 767px) {
+  .contact .contact-content { gap: 20px; }
+  .contact .contact-form { max-width: 100%; margin-inline: 0; }
+  .contact-form{margin-top: 20px;}
+}
+
+/* Medium+ screens */
+@media (min-width: 768px) {
+  .contact .contact-content { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .contact .contact-form { margin-inline: 0; }
+  .section.contact { margin-top: 40px; }
+}
+
+
+/*-----------------------------------*\
+  #MAP
+\*-----------------------------------*/
+
+.map .map-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-5);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border-purple-alpha-30);
+}
+
+.map .map-embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  filter: contrast(1.05) saturate(1.05);
+}
+
 
 /*-----------------------------------*\
   #FOOTER
