@@ -9,7 +9,7 @@
   <!-- 
     - primary meta tags
   -->
-  <title>Contact | Nebula Esports 2025</title>
+  <title>Sign Up / Login | Nebula Esports 2025</title>
   <meta name="title" content="Nebula Esports 2025 - BY Nebula Esports">
   <meta name="description" content="Nebula Esports 2025 is your gateway to the latest tournaments, gaming news, and team updates. Join our community and experience epic matches, headlines, and more.">
 
@@ -73,13 +73,13 @@
             <a href="./contact.html" class="navbar-link" data-nav-link>contact</a>
           </li>
           <li class="navbar-item">
-            <a href="rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a>
+            <a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a>
           </li>
 
         </ul>
       </nav>
 
-      <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+  <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
 
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
@@ -90,95 +90,69 @@
     </div>
   </header>
 
-  <!--
-    -Contact
+ <!-- 
+    - #Signup / Login
   -->
+    <section class="section auth" aria-labelledby="auth-title">
+      <div class="container">
+        <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
+        <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
+        <p class="section-subtitle" data-reveal="bottom">Join the community</p>
+        <h1 class="h2 section-title" id="auth-title" data-reveal="bottom">LOGIN <span class="span">/</span> SIGN UP</h1>
 
-  <section class="section contact" aria-labelledby="contact-title">
-    <div class="container">
-      <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
-      <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
-      <p class="section-subtitle" data-reveal="bottom">Get In Touch</p>
-      <h2 class="h2 section-title" id="contact-title" data-reveal="bottom">Contact <span class="span">Us</span></h2>
-      <p class="section-text" data-reveal="bottom">
-        Have questions about tournaments, teams, or partnerships? Drop us a message and we’ll respond ASAP.
-      </p>
+        <div class="auth-card" data-reveal="bottom">
+          <div class="auth-tabs" role="tablist">
+            <button class="auth-tab active" role="tab" aria-selected="true" data-auth-tab="login">Login</button>
+            <button class="auth-tab" role="tab" aria-selected="false" data-auth-tab="signup">Sign Up</button>
+          </div>
 
-      <div class="contact-content">
-        <div class="contact-info" data-reveal="left">
-          <ul>
-            <li class="contact-item">
-              <span class="span">Location:</span>
-              <address class="contact-link">
-                Nebula Institute of Technology <br>
-                Negombo Road, <br>
-                Welisara.
-              </address>
-            </li>
+          <div class="auth-panels">
+            <!-- Login Panel -->
+            <div class="auth-panel active" id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+              <form class="auth-form" action="#" method="post" novalidate>
+                <label for="login-email" class="visually-hidden">Email</label>
+                <input id="login-email" class="input-field" type="email" name="email" placeholder="Email" required autocomplete="email">
 
-            <li class="contact-item">
-              <span class="span">Email:</span>
-              <a class="contact-link" href="mailto:info@sevinda-herath.is-a.dev">info@sevinda-herath.is-a.dev</a>
-            </li>
+                <label for="login-password" class="visually-hidden">Password</label>
+                <input id="login-password" class="input-field" type="password" name="password" placeholder="Password" required autocomplete="current-password">
 
-            <li class="contact-item">
-              <span class="span">Phone:</span>
-              <a class="contact-link" href="tel:+940112162162">+94 (011) 216-2162</a>
-            </li>
+                <div class="auth-row">
+                  <label class="checkbox">
+                    <input type="checkbox" name="remember"> <span>Remember me</span>
+                  </label>
+                  <a href="#" class="link-sm">Forgot password?</a>
+                </div>
 
-            <li class="contact-item">
-              <span class="span">Social:</span>
-              <div class="social-wrapper">
-                <a href="#" class="social-link" aria-label="Facebook">
-                  <ion-icon name="logo-facebook"></ion-icon>
-                </a>
-                <a href="#" class="social-link" aria-label="Twitter">
-                  <ion-icon name="logo-twitter"></ion-icon>
-                </a>
-                <a href="#" class="social-link" aria-label="Instagram">
-                  <ion-icon name="logo-instagram"></ion-icon>
-                </a>
-                <a href="#" class="social-link" aria-label="YouTube">
-                  <ion-icon name="logo-youtube"></ion-icon>
-                </a>
-              </div>
-            </li>
-          </ul>
+                <button type="submit" class="btn" data-btn>Login</button>
+              </form>
+            </div>
+
+            <!-- Signup Panel -->
+            <div class="auth-panel" id="panel-signup" role="tabpanel" aria-labelledby="tab-signup">
+              <form class="auth-form" action="#" method="post" novalidate>
+                <label for="signup-username" class="visually-hidden">Username</label>
+                <input id="signup-username" class="input-field" type="text" name="username" placeholder="Username" required autocomplete="username">
+
+                <label for="signup-email" class="visually-hidden">Email</label>
+                <input id="signup-email" class="input-field" type="email" name="email" placeholder="Email" required autocomplete="email">
+
+                <label for="signup-password" class="visually-hidden">Password</label>
+                <input id="signup-password" class="input-field" type="password" name="password" placeholder="Password" required autocomplete="new-password">
+
+                <label for="signup-confirm" class="visually-hidden">Confirm Password</label>
+                <input id="signup-confirm" class="input-field" type="password" name="confirm" placeholder="Confirm Password" required autocomplete="new-password">
+                
+                <label class="checkbox">
+                  <input type="checkbox" name="terms" required> <span>I agree to the rules & guidelines</span>
+                </label>
+
+                <button type="submit" class="btn" data-btn>Create Account</button>
+              </form>
+            </div>
+          </div>
         </div>
-
-        <form class="contact-form" action="#" method="post" data-reveal="right">
-          <input class="input-field" type="text" name="full_name" placeholder="Your Name"  autocomplete="off"required>
-          <input class="input-field" type="email" name="email" placeholder="Your Email"  autocomplete="off" required>
-          <input class="input-field" type="text" name="subject"  autocomplete="off" placeholder="Subject">
-          <textarea class="input-field" name="message" placeholder="Your Message" rows="6"  autocomplete="off"required></textarea>
-          <button type="submit" class="btn"  autocomplete="off" data-btn>Send Message</button>
-        </form>
       </div>
-    </div>
-  </section>
-
-
-  <!--
-    - MAP
-  -->
-
-  <section class="section map" aria-labelledby="map-title">
-    <div class="container">
-      <p class="section-subtitle" data-reveal="bottom">Find Us</p>
-      <h2 class="h2 section-title" id="map-title" data-reveal="bottom">Our <span class="span">Location</span></h2>
-
-      <div class="map-wrapper" data-reveal="bottom">
-        <iframe
-          class="map-embed"
-          title="Nebula Institute of Technology Location"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Nebula+Institute+of+Technology+Welisara&output=embed">
-        </iframe>
-      </div>
-    </div>
-  </section>
-
+    </section>
 
  <!-- 
     - #FOOTER
@@ -346,6 +320,26 @@
   -->
   <script src="../assets/js/script.js"></script>
   <script src="../assets/js/bg.js"></script>
+  <script>
+    // Simple auth tab toggler (scoped to this page)
+    (function(){
+      const tabs = document.querySelectorAll('.auth-tab');
+      const panels = {
+        login: document.getElementById('panel-login'),
+        signup: document.getElementById('panel-signup'),
+      };
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-auth-tab');
+          // toggle active state on tabs
+          tabs.forEach(t => t.classList.toggle('active', t === btn));
+          tabs.forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
+          // toggle panels
+          Object.keys(panels).forEach(key => panels[key].classList.toggle('active', key === target));
+        });
+      });
+    })();
+  </script>
 
   <!-- 
     - ionicon link

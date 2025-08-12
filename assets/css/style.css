@@ -103,7 +103,10 @@
 }
 
 
-
+::selection{
+  color: black;
+  background-color:var(--text-purple);
+}
 
 
 /*-----------------------------------*\
@@ -327,7 +330,7 @@ body {
   #HEADER
 \*-----------------------------------*/
 
-.header .btn { display: none; }
+.header .btn { display: grid; text-align: center; }
 
 .header {
   position: absolute;
@@ -606,7 +609,6 @@ body {
   background-size: 0% 4px;
   transition: var(--transition-2);
 }
-
 .news-card .card-title:is(:hover, :focus-visible) { background-size: 100% 4px; }
 
 .news-card .link {
@@ -737,6 +739,90 @@ body {
   aspect-ratio: 16 / 9;
   border: 0;
   filter: contrast(1.05) saturate(1.05);
+}
+
+/*-----------------------------------*\
+  #AUTH (SIGNUP/LOGIN)
+\*-----------------------------------*/
+
+.auth .section-subtitle { letter-spacing: 4px; }
+
+.auth-card {
+  background-color: var(--bg-oxford-blue-alpha-90);
+  border: 2px solid var(--border-purple-alpha-30);
+  border-radius: var(--radius-5);
+  box-shadow: var(--shadow);
+  max-width: 720px;
+  margin: 20px auto 0;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-tab {
+  padding: 14px 20px;
+  text-transform: uppercase;
+  font-weight: var(--weight-semiBold);
+  color: var(--text-white);
+  background: transparent;
+  border-bottom: 2px solid transparent;
+}
+
+.auth-row .checkbox span { display: inline-block; min-width: 14ch; }
+.auth-tab.active { border-bottom-color: var(--bg-purple); }
+
+.auth-panels { padding: 20px; }
+
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+
+.auth-form { display: grid; gap: 12px; }
+
+.auth-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block: 6px 4px;
+}
+
+.checkbox { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fontSize-7); }
+#panel-signup .auth-form > .checkbox { justify-self: start; }
+#panel-signup .checkbox input[type="checkbox"] { margin: 0; }
+#panel-signup .checkbox span { display: inline-block; min-width: 32ch; }
+#panel-signup .auth-form > .btn { justify-self: center; margin-top: 12px; }
+#panel-login .auth-form > .btn { justify-self: center; margin-top: 12px; }
+.link-sm { color: var(--text-champagne-pink); font-size: var(--fontSize-7); text-transform: uppercase; }
+.link-sm:is(:hover, :focus-visible) { color: var(--text-purple); }
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+/* Change input/textarea border and text color to purple on focus or when filled */
+.auth-form input:focus,
+.auth-form textarea:focus,
+.auth-form input:not(:placeholder-shown),
+.auth-form textarea:not(:placeholder-shown) {
+  outline: none;
+  border-color: var(--bg-purple);
+  color: var(--text-white);
+}
+
+/* If you want background to change too: */
+.auth-form input:focus,
+.auth-form textarea:focus,
+.auth-form input:not(:placeholder-shown),
+.auth-form textarea:not(:placeholder-shown) {
+  background-color: var(--bg-purple-alpha-30);
+}
+
+@media (min-width: 768px) {
+  .auth-form { gap: 15px; }
 }
 
 
