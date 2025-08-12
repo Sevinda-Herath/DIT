@@ -278,6 +278,13 @@ body {
   margin-inline: auto;
 }
 
+/* Left-aligned, bold variant for rule notes inside rules page */
+.rule-note {
+  text-align: left;
+  font-weight: var(--weight-semiBold);
+  margin-top: 10px;
+}
+
 .social-wrapper {
   display: flex;
   align-items: center;
@@ -627,7 +634,6 @@ body {
   #CONTACT
 \*-----------------------------------*/
 
-.section.contact { margin-top: 20px; }
 
 .contact .contact-content {
   display: grid;
@@ -661,7 +667,54 @@ body {
 @media (min-width: 768px) {
   .contact .contact-content { grid-template-columns: 1fr 1fr; gap: 30px; }
   .contact .contact-form { margin-inline: 0; }
-  .section.contact { margin-top: 40px; }
+}
+
+
+/*-----------------------------------*\
+  #RULES PAGE
+\*-----------------------------------*/
+
+.rules-toc {
+  background-color: var(--bg-oxford-blue-alpha-90);
+  border: 2px solid var(--border-purple-alpha-30);
+  border-radius: var(--radius-5);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin: 0 auto 30px auto;
+}
+
+.toc-list {
+  list-style: decimal inside;
+  display: grid;
+  gap: 8px;
+}
+
+.toc-list a {
+  color: var(--text-champagne-pink);
+  text-transform: uppercase;
+  font-weight: var(--weight-semiBold);
+}
+
+.toc-list a:is(:hover, :focus-visible) { color: var(--text-purple); }
+
+.rules-section {
+  scroll-margin-top: 100px; /* offset for fixed header/back-to-top */
+  margin-block: 30px;
+}
+
+.rules-section .h3.title {
+  text-transform: uppercase;
+  margin-block-end: 10px;
+}
+
+.rules-list {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.rules-list li {
+  list-style: disc;
+  margin-block: 6px;
 }
 
 
