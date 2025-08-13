@@ -839,6 +839,48 @@ body {
   font-size: var(--fontSize-7);
   margin-top: 6px;
 }
+.game-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.game-btn {
+  min-width: 140px;
+  height: 44px;
+  background-color: #222; /* matte black */
+  color: #eaffd0;
+  font-size: var(--fontSize-6);
+  font-weight: var(--weight-bold);
+  border-radius: var(--radius-5);
+  box-shadow: 0 2px 8px rgba(34, 34, 34, 0.15);
+  transition: background 250ms, transform 200ms, color 200ms, border 200ms;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+}
+
+.game-btn:is(:hover, :focus-visible) {
+  background-color: #111; /* darker matte black */
+  transform: translateY(-2px) scale(1.04);
+  color: #fffbe7;
+}
+
+/* Selected state: add .selected class to button */
+.game-btn.selected {
+  background-color: #111;
+  color: #fffbe7;
+  transform: translateY(-2px) scale(1.04);
+  border: 2px solid #2ecc40; /* green border */
+}
 
 /*-----------------------------------*\
   #FOOTER

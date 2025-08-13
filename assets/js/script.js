@@ -142,3 +142,22 @@ addEventOnElements(hoverElements, "mouseout", function () {
         });
       });
     })();
+
+    // Multi-select game button logic
+    const gameBtns = document.querySelectorAll('.game-btn');
+    const hiddenInput = document.getElementById('selected-game-titles');
+    gameBtns.forEach(btn => {
+      btn.addEventListener('click', function () {
+        btn.classList.toggle('selected');
+        const selected = Array.from(gameBtns)
+          .filter(b => b.classList.contains('selected'))
+          .map(b => b.getAttribute('data-game'));
+        hiddenInput.value = selected.join(',');
+        // Required validation: at least one game selected
+        if (selected.length === 0) {
+          hiddenInput.setCustomValidity('Please select at least one game.');
+        } else {
+          hiddenInput.setCustomValidity('');
+        }
+      });
+    });

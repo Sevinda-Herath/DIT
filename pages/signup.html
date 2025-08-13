@@ -11,7 +11,8 @@
   -->
   <title>Signup | Nebula Esports 2025</title>
   <meta name="title" content="Nebula Esports 2025 - BY Nebula Esports">
-  <meta name="description" content="Nebula Esports 2025 is your gateway to the latest tournaments, gaming news, and team updates. Join our community and experience epic matches, headlines, and more.">
+  <meta name="description"
+    content="Nebula Esports 2025 is your gateway to the latest tournaments, gaming news, and team updates. Join our community and experience epic matches, headlines, and more.">
 
   <!-- 
     - favicon
@@ -51,7 +52,7 @@
     <div class="container">
 
       <a href="#" class="logo">
-        <img src="../assets/images/nebula-esports.png" style ="width:80px; height:auto;" alt="unigine home">
+        <img src="../assets/images/nebula-esports.png" style="width:80px; height:auto;" alt="unigine home">
       </a>
 
       <nav class="navbar" data-navbar>
@@ -79,7 +80,7 @@
         </ul>
       </nav>
 
-  <a href="./signup.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <a href="./signup.html" class="btn" data-btn>LOGIN / SIGN UP</a>
 
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
@@ -90,7 +91,7 @@
     </div>
   </header>
 
-   <!-- 
+  <!-- 
     - #SIGNUP
   -->
 
@@ -99,7 +100,8 @@
       <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
       <p class="section-subtitle" data-reveal="bottom">&nbsp;</p>
       <p class="section-subtitle" data-reveal="bottom">Register your team</p>
-      <h1 class="h2 section-title" id="signup-title" data-reveal="bottom">Tournament <span class="span">Signup</span></h1>
+      <h1 class="h2 section-title" id="signup-title" data-reveal="bottom">Tournament <span class="span">Signup</span>
+      </h1>
 
       <div class="auth-card" data-reveal="bottom">
 
@@ -114,7 +116,8 @@
           <div class="auth-panel active" id="panel-details" role="tabpanel" aria-labelledby="tab-details">
             <form class="auth-form" action="#" method="post" novalidate autocomplete="off">
               <label for="your-name">Your Name</label>
-              <input id="your-name" class="input-field" type="text" name="full_name" placeholder=""required autocomplete="off">
+              <input id="your-name" class="input-field" type="text" name="full_name" placeholder="" required
+                autocomplete="off">
 
               <label for="your-dob">Date of Birth</label>
               <input id="your-dob" class="input-field" type="date" name="dob" placeholder="" required>
@@ -129,7 +132,8 @@
               <input id="your-nic" class="input-field" type="text" name="nic" placeholder="" required>
 
               <label for="your-mobile">Mobile Number</label>
-              <input id="your-mobile" class="input-field" type="tel" name="mobile" required placeholder="" autocomplete="off">
+              <input id="your-mobile" class="input-field" type="tel" name="mobile" required placeholder=""
+                autocomplete="off">
 
               <button type="button" class="btn" data-btn data-next-tab="game">Save & Continue</button>
             </form>
@@ -147,6 +151,21 @@
               <label for="team-captain">Team Captain</label>
               <input id="team-captain" class="input-field" type="text" name="team_captain" placeholder="" required>
 
+              <div id="game-titles" class="game-select-group" role="group" aria-labelledby="game-titles-label">
+                <label id="game-titles-label" style="margin-bottom:8px;">Choose The Game(s)</label>
+                <div class="game-btn-row">
+                  <button type="button" class="game-btn" data-game="pubg_mobile">PUBG Mobile</button>
+                  <button type="button" class="game-btn" data-game="free_fire">Free Fire</button>
+                  <button type="button" class="game-btn" data-game="cod_pc">Call of Duty (PC)</button>
+                  <button type="button" class="game-btn" data-game="pubg_pc">PUBG (PC)</button>
+                  <button type="button" class="game-btn" data-game="pubg_mobile">PUBG Mobile</button>
+                  <button type="button" class="game-btn" data-game="free_fire">Free Fire</button>
+                  <button type="button" class="game-btn" data-game="cod_pc">Call of Duty (PC)</button>
+                  <button type="button" class="game-btn" data-game="pubg_pc">PUBG (PC)</button>
+                </div>
+                <input type="hidden" name="game_titles" id="selected-game-titles" required>
+              </div>
+             
               <label for="players-count">Count of Players</label>
               <select id="players-count" class="input-field" name="players_count" required>
                 <option value="" disabled selected>Count of Players (1-5)</option>
@@ -159,8 +178,10 @@
 
               <div class="auth-row">
                 <button type="button" class="btn" data-prev-tab="details">Back</button>
-                <button type="button" class="btn" id="to-members-btn" data-btn data-next-tab="members">Save & Continue</button>
-                <button type="submit" class="btn" id="submit-from-game" style="display:none">Submit Registration</button>
+                <button type="button" class="btn" id="to-members-btn" data-btn data-next-tab="members">Save &
+                  Continue</button>
+                <button type="submit" class="btn" id="submit-from-game" style="display:none">Submit
+                  Registration</button>
               </div>
             </form>
           </div>
@@ -170,7 +191,7 @@
             <form class="auth-form" action="#" method="post" novalidate autocomplete="off">
               <div class="member-block" data-member="1">
                 <!-- Member 1 -->
-                 <p>Member 01</p><br>
+                <p>Member 01</p><br>
                 <input class="input-field" type="text" name="member1_name" placeholder="Full Name">
                 <input class="input-field" type="text" name="member1_nic" placeholder="NIC">
                 <input class="input-field" type="email" name="member1_email" placeholder="Email">
@@ -226,7 +247,7 @@
 
 
 
-   <!-- 
+  <!-- 
     - #FOOTER
   -->
 
@@ -238,7 +259,8 @@
         <div class="footer-brand">
 
           <a href="#" class="logo">
-            <img src="../assets/images/nebula-esports.png" style="width: 100px;" loading="lazy" alt="Nebula Esports logo">
+            <img src="../assets/images/nebula-esports.png" style="width: 100px;" loading="lazy"
+              alt="Nebula Esports logo">
           </a>
 
           <p class="footer-text">
@@ -313,9 +335,9 @@
             <span class="span">Location:</span>
 
             <address class="contact-link">
-              Nebula Institute of Technology <br>   
-              Negombo Road, <br>   
-              Welisara.   
+              Nebula Institute of Technology <br>
+              Negombo Road, <br>
+              Welisara.
             </address>
           </div>
 
@@ -394,17 +416,17 @@
   <script src="../assets/js/bg.js"></script>
   <script>
     // Signup tabs toggler (3 tabs)
-    (function(){
+    (function () {
       const tabs = document.querySelectorAll('.auth-tab');
       const panels = {
         details: document.getElementById('panel-details'),
         game: document.getElementById('panel-game'),
         members: document.getElementById('panel-members'),
       };
-  const playersSelect = document.getElementById('players-count');
-  const toMembersBtn = document.getElementById('to-members-btn');
-  const submitFromGame = document.getElementById('submit-from-game');
-  const allForms = document.querySelectorAll('.auth-panel form');
+      const playersSelect = document.getElementById('players-count');
+      const toMembersBtn = document.getElementById('to-members-btn');
+      const submitFromGame = document.getElementById('submit-from-game');
+      const allForms = document.querySelectorAll('.auth-panel form');
       function activate(target, btn) {
         tabs.forEach(t => t.classList.toggle('active', t === btn));
         tabs.forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
@@ -546,4 +568,4 @@
 
 </body>
 
-</html> 
+</html>
