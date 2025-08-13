@@ -1,0 +1,4 @@
+# Ignore local database and uploaded files
+data/*.sqlite
+uploads/**
+!uploads/.gitkeep
