@@ -119,3 +119,26 @@ addEventOnElements(hoverElements, "mouseover", function () {
 addEventOnElements(hoverElements, "mouseout", function () {
   cursor.classList.remove("hovered");
 });
+
+/**
+ * Signup Page
+ */
+
+// Simple auth tab toggler (scoped to this page)
+    (function(){
+      const tabs = document.querySelectorAll('.auth-tab');
+      const panels = {
+        login: document.getElementById('panel-login'),
+        signup: document.getElementById('panel-signup'),
+      };
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-auth-tab');
+          // toggle active state on tabs
+          tabs.forEach(t => t.classList.toggle('active', t === btn));
+          tabs.forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
+          // toggle panels
+          Object.keys(panels).forEach(key => panels[key].classList.toggle('active', key === target));
+        });
+      });
+    })();

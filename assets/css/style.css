@@ -825,6 +825,20 @@ body {
   .auth-form { gap: 15px; }
 }
 
+/*-----------------------------------*\
+  #Signup
+\*-----------------------------------*/
+
+/* Signup wizard: hide tab headers on this page */
+.signup-wizard .auth-tabs { display: none; }
+.signup-wizard .auth-row { margin-block: 8px 0; }
+/* Validation styles */
+.signup-wizard .input-field.invalid { border-color: #ff4d4f; }
+.signup-wizard .field-error {
+  color: #ff6b6b;
+  font-size: var(--fontSize-7);
+  margin-top: 6px;
+}
 
 /*-----------------------------------*\
   #FOOTER
