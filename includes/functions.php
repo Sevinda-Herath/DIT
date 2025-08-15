@@ -15,9 +15,61 @@ function redirect(string $path): never {
 // Require login and return current user id
 function require_login(): int {
 	if (!isset($_SESSION['user_id'])) {
-		redirect('/pages/signup-login.php');
+		// Attempt auto-login via remember cookie
+		if (isset($_COOKIE['remember'])) {
+			[$sel, $ver] = array_pad(explode(':', $_COOKIE['remember'], 2), 2, '');
+			if ($sel && $ver) {
+				$pdo = db();
+				$stmt = $pdo->prepare('SELECT user_id, token_hash, expires_at FROM remember_tokens WHERE selector = ? LIMIT 1');
+				$stmt->execute([$sel]);
+				$row = $stmt->fetch();
+				if ($row) {
+					if (strtotime($row['expires_at']) > time() && hash_equals($row['token_hash'], hash('sha256', $ver))) {
+						$_SESSION['user_id'] = (int)$row['user_id'];
+						return (int)$row['user_id'];
+					} else {
+						// Expired or mismatch: cleanup
+						$pdo->prepare('DELETE FROM remember_tokens WHERE selector = ?')->execute([$sel]);
+						setcookie('remember', '', time() - 3600, '/', '', false, true);
+					}
+				}
+			}
+			redirect('/php/signup-login.php');
+		}
+		redirect('/php/signup-login.php');
 	}
 	return (int)$_SESSION['user_id'];
+}
+
+function create_remember_token(int $userId): void {
+	$selector = bin2hex(random_bytes(6)); // 12 chars
+	$verifier = bin2hex(random_bytes(18)); // 36 chars raw -> 72 hex, truncated client side ok
+	$hash = hash('sha256', $verifier);
+	$expires = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 30); // 30 days
+	$pdo = db();
+	$stmt = $pdo->prepare('INSERT INTO remember_tokens (user_id, selector, token_hash, expires_at) VALUES (?,?,?,?)');
+	$stmt->execute([$userId, $selector, $hash, $expires]);
+	$cookie = $selector . ':' . $verifier;
+	setcookie('remember', $cookie, [
+		'expires' => time() + 60 * 60 * 24 * 30,
+		'path' => '/',
+		'secure' => false,
+		'httponly' => true,
+		'samesite' => 'Lax'
+	]);
+}
+
+function clear_remember_token(?int $userId = null): void {
+	if (isset($_COOKIE['remember'])) {
+		[$sel] = explode(':', $_COOKIE['remember'], 2);
+		$pdo = db();
+		$pdo->prepare('DELETE FROM remember_tokens WHERE selector = ?')->execute([$sel]);
+		setcookie('remember', '', time() - 3600, '/', '', false, true);
+	}
+	if ($userId) {
+		$pdo = db();
+		$pdo->prepare('DELETE FROM remember_tokens WHERE user_id = ?')->execute([$userId]);
+	}
 }
 
 // Fetch minimal current user info

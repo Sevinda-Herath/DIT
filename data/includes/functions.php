@@ -10,7 +10,7 @@ function redirect(string $path): never {
 
 function require_login(): int {
     if (!isset($_SESSION['user_id'])) {
-        redirect('/pages/signup-login.php');
+        redirect('../php/signup-login.php');
     }
     return (int)$_SESSION['user_id'];
 }

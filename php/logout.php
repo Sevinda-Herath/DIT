@@ -11,6 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 verify_csrf();
 
 // Clear all session data
+// Clear remember token(s) and session
+if (isset($_SESSION['user_id'])) {
+    clear_remember_token((int)$_SESSION['user_id']);
+}
 $_SESSION = [];
 if (session_status() === PHP_SESSION_ACTIVE) {
     // Invalidate session cookie

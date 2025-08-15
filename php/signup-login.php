@@ -15,13 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Email and password are required.';
         } else {
             $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
+      $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
             $stmt->execute([$email]);
             $row = $stmt->fetch();
             if (!$row || !password_verify($password, $row['password_hash'])) {
                 $errors[] = 'Invalid credentials.';
             } else {
                 $_SESSION['user_id'] = (int)$row['id'];
-                redirect('/pages/user.php');
+        if (isset($_POST['remember'])) {
+          create_remember_token((int)$row['id']);
+        }
+                redirect('../php/user.php');
             }
         }
     } elseif (isset($_POST['action']) && $_POST['action'] === 'signup_step1') {
@@ -50,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'email' => $email,
                     'password_hash' => password_hash($password, PASSWORD_DEFAULT),
                 ];
-                redirect('/pages/signup.php');
+                redirect('../php/signup.php');
             }
         }
     }
@@ -70,6 +74,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="preload" as="image" href="../assets/images/hero-banner.png">
   <link rel="preload" as="image" href="../assets/images/hero-banner-bg.png">
+  <style>
+    .auth-errors { 
+      border: 2px solid #ff4d4d; 
+      background: rgba(255, 60, 60, 0.12); 
+      padding: 14px 18px; 
+      border-radius: 6px; 
+      margin: 0 0 22px; 
+      box-shadow: 0 4px 12px -2px rgba(255,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-errors:before { 
+      content: ""; 
+      position: absolute; 
+      inset: 0; 
+      background: linear-gradient(110deg, rgba(255,0,70,0.20), rgba(255,150,0,0.08));
+      pointer-events: none; 
+      mix-blend-mode: overlay; 
+    }
+    .auth-errors-title { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font-weight: 600; 
+      text-transform: uppercase; 
+      letter-spacing: .5px; 
+      font-size: 14px; 
+      color: #fff; 
+      margin: 0 0 8px; 
+    }
+    .auth-errors-title:before { 
+      content: "⚠"; 
+      font-size: 16px; 
+      line-height: 1; 
+    }
+    .auth-errors ul { 
+      margin: 0; 
+      padding: 0 0 0 18px; 
+      list-style: disc; 
+      display: grid; 
+      gap: 4px; 
+    }
+    .auth-errors li { 
+      color: #ffd9d9; 
+      font-size: 13px; 
+      line-height: 1.35; 
+    }
+    .auth-errors li::marker { color: #ff8686; }
+    @media (min-width: 600px) { 
+      .auth-errors { padding: 16px 22px; }
+      .auth-errors-title { font-size: 15px; }
+      .auth-errors li { font-size: 13.5px; }
+    }
+  </style>
 </head>
 <body id="top">
   <header class="header active" data-header>
@@ -86,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li class="navbar-item"><a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
         </ul>
       </nav>
-      <a href="./signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
@@ -104,10 +162,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="auth-card" data-reveal="bottom">
         <?php if ($errors): ?>
-          <div class="auth-panels" style="padding: 12px; color: #ff6b6b;">
-            <?php foreach ($errors as $e): ?>
-              <p><?= h($e) ?></p>
-            <?php endforeach; ?>
+          <div class="auth-errors" role="alert" aria-live="assertive" data-reveal="bottom">
+            <div class="auth-errors-title">Please fix the following</div>
+            <ul>
+              <?php foreach ($errors as $e): ?>
+                <li><?= h($e) ?></li>
+              <?php endforeach; ?>
+            </ul>
           </div>
         <?php endif; ?>
         <div class="auth-tabs" role="tablist">
@@ -128,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <div class="auth-row">
                 <label class="checkbox">
-                  <input type="checkbox" name="remember"> <span>Remember me</span>
+                  <input type="checkbox" name="remember" checked> <span>Remember me</span>
                 </label>
                 <a href="#" class="link-sm">Forgot password?</a>
               </div>

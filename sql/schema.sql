@@ -54,3 +54,25 @@ CREATE TABLE IF NOT EXISTS `members` (
 -- Optional: seed data example (commented out)
 -- INSERT INTO users (username, email, password_hash, created_at)
 -- VALUES ('demo', 'demo@example.com', '$2y$10$examplehash', NOW());
+
+
+-- Remember tokens table (persistent login "remember me")
+DROP TABLE IF EXISTS `remember_tokens`;
+CREATE TABLE `remember_tokens` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `selector` CHAR(12) NOT NULL,
+  `token_hash` CHAR(64) NOT NULL,
+  `expires_at` DATETIME NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_selector` (`selector`),
+  KEY `idx_expires` (`expires_at`),
+  KEY `idx_user` (`user_id`),
+  CONSTRAINT `fk_remember_tokens_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Notes:
+--  * Aligns with application code (selector CHAR(12), token_hash column name).
+--  * Drop table before create ensures updated structure during manual migrations.
+--  * Increase selector length or expires window in code & here if future requirements change.

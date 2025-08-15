@@ -105,12 +105,12 @@ $members = $membersStmt->fetchAll();
         </nav>
 
         <?php if (isset($_SESSION['user_id'])): ?>
-          <form action="/pages/logout.php" method="post" style="display:inline;">
+          <form action="../php/logout.php" method="post" style="display:inline;">
             <?= csrf_field(); ?>
             <button type="submit" class="btn" data-btn>LOGOUT</button>
           </form>
         <?php else: ?>
-          <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+          <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
         <?php endif; ?>
 
         <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
@@ -576,7 +576,7 @@ $members = $membersStmt->fetchAll();
           // CSRF token from PHP session
           fd.append('csrf_token', '<?= h($_SESSION['csrf_token'] ?? '') ?>');
 
-          return fetch('../includes/profile-save.php', { method: 'POST', body: fd })
+          return fetch('../php/profile-save.php', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(json => {
               if (!json.ok) throw new Error(json.error || 'Save failed');

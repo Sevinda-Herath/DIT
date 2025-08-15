@@ -5,7 +5,7 @@ verify_csrf();
 
 // Guard: must come from step 1
 if (empty($_SESSION['signup_step1'])) {
-    redirect('/pages/signup-login.php');
+    redirect('../php/signup-login.php');
 }
 
 $base = $_SESSION['signup_step1'];
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->commit();
             unset($_SESSION['signup_step1']);
             $_SESSION['user_id'] = $userId;
-            redirect('/pages/user.php');
+            redirect('../php/user.php');
         } catch (Throwable $e) {
             $pdo->rollBack();
             $errors[] = 'Failed to create account. Please try again.';
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li class="navbar-item"><a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
         </ul>
       </nav>
-      <a href="./signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
@@ -279,6 +279,151 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
       playersSel.addEventListener('change', render);
       render();
+    })();
+  </script>
+   <script>
+    // Signup tabs toggler (3 tabs)
+    (function () {
+      const tabs = document.querySelectorAll('.auth-tab');
+      const panels = {
+        details: document.getElementById('panel-details'),
+        game: document.getElementById('panel-game'),
+        members: document.getElementById('panel-members'),
+      };
+      const playersSelect = document.getElementById('players-count');
+      const toMembersBtn = document.getElementById('to-members-btn');
+      const submitFromGame = document.getElementById('submit-from-game');
+      const allForms = document.querySelectorAll('.auth-panel form');
+      function activate(target, btn) {
+        tabs.forEach(t => t.classList.toggle('active', t === btn));
+        tabs.forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
+        Object.keys(panels).forEach(key => panels[key].classList.toggle('active', key === target));
+      }
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => activate(btn.getAttribute('data-auth-tab'), btn));
+      });
+      // Helpers: custom validation UI
+      function getMessage(el) {
+        if (el.validity.valueMissing) return 'This field is required.';
+        if (el.validity.typeMismatch && el.type === 'email') return 'Enter a valid email address.';
+        if (el.validity.patternMismatch) return 'Please match the requested format.';
+        return 'Please fix this field.';
+      }
+      function showError(el, msg) {
+        el.classList.add('invalid');
+        let hint = el.nextElementSibling;
+        if (!hint || !hint.classList || !hint.classList.contains('field-error')) {
+          hint = document.createElement('p');
+          hint.className = 'field-error';
+          el.parentNode.insertBefore(hint, el.nextSibling);
+        }
+        hint.textContent = msg;
+      }
+      function clearError(el) {
+        el.classList.remove('invalid');
+        const hint = el.nextElementSibling;
+        if (hint && hint.classList && hint.classList.contains('field-error')) {
+          hint.remove();
+        }
+      }
+      function validateForm(form) {
+        let firstInvalid = null;
+        const fields = form.querySelectorAll('input, select, textarea');
+        fields.forEach(el => {
+          // Only validate visible or required fields
+          const style = window.getComputedStyle(el.closest('.member-block') || el);
+          const isHiddenBlock = (el.closest('.member-block') && (el.closest('.member-block').style.display === 'none' || style.display === 'none'));
+          if (isHiddenBlock) { clearError(el); return; }
+          if (!el.checkValidity()) {
+            if (!firstInvalid) firstInvalid = el;
+            showError(el, getMessage(el));
+          } else {
+            clearError(el);
+          }
+        });
+        if (firstInvalid) { firstInvalid.focus(); return false; }
+        return true;
+      }
+
+      // Next buttons (validate current form before navigating)
+      document.querySelectorAll('[data-next-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const form = btn.closest('form');
+          if (form && !validateForm(form)) { return; }
+          const target = btn.getAttribute('data-next-tab');
+          const tabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === target);
+          if (tabBtn) activate(target, tabBtn);
+        });
+      });
+      // Prev buttons
+      document.querySelectorAll('[data-prev-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-prev-tab');
+          const tabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === target);
+          if (tabBtn) activate(target, tabBtn);
+        });
+      });
+
+      // Toggle members step based on players count
+      function setMembersRequired(count) {
+        const blocks = document.querySelectorAll('#panel-members .member-block');
+        blocks.forEach(block => {
+          const idx = parseInt(block.getAttribute('data-member'), 10);
+          const req = idx <= count;
+          block.querySelectorAll('input').forEach(inp => inp.required = req);
+        });
+      }
+
+      function updateMembersStep() {
+        const val = playersSelect ? playersSelect.value : '';
+        const isSolo = val === '1';
+        if (toMembersBtn && submitFromGame) {
+          toMembersBtn.style.display = isSolo ? 'none' : '';
+          submitFromGame.style.display = isSolo ? '' : 'none';
+        }
+        // Show only N member blocks where N = players count (default 5 if not selected)
+        const count = val && !isNaN(parseInt(val, 10)) ? parseInt(val, 10) : 5;
+        const blocks = document.querySelectorAll('#panel-members .member-block');
+        blocks.forEach(block => {
+          const idx = parseInt(block.getAttribute('data-member'), 10);
+          const visible = idx <= count;
+          block.style.display = visible ? '' : 'none';
+          if (!visible) {
+            block.querySelectorAll('input').forEach(inp => clearError(inp));
+          }
+        });
+        setMembersRequired(count);
+        // If user is on members and switches to solo, send back to game
+        if (isSolo && panels.members && panels.members.classList.contains('active')) {
+          const gameTabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === 'game');
+          if (gameTabBtn) activate('game', gameTabBtn);
+        }
+      }
+      if (playersSelect) {
+        playersSelect.addEventListener('change', updateMembersStep);
+        // Initialize state on load
+        updateMembersStep();
+      }
+
+      // Live validation on input/blur
+      document.querySelectorAll('.auth-panel input, .auth-panel select').forEach(el => {
+        el.addEventListener('input', () => {
+          if (el.checkValidity()) clearError(el);
+        });
+        el.addEventListener('blur', () => {
+          if (!el.checkValidity()) showError(el, getMessage(el)); else clearError(el);
+        });
+      });
+
+      // Prevent submission if invalid; show custom messages
+      allForms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+          if (playersSelect) updateMembersStep();
+          if (!validateForm(form)) {
+            e.preventDefault();
+          }
+        });
+      });
     })();
   </script>
   <script src="../assets/js/script.js"></script>
