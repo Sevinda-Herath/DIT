@@ -882,6 +882,43 @@ body {
   border: 2px solid #2ecc40; /* green border */
 }
 
+/* Wizard member blocks & outline buttons */
+.signup-wizard .member-block {
+  border: 2px solid var(--border-purple-alpha-30);
+  background: var(--bg-oxford-blue-alpha-90);
+  padding: 16px 14px 12px;
+  border-radius: var(--radius-5);
+  box-shadow: var(--shadow);
+  position: relative;
+  transition: border-color var(--transition-1), background var(--transition-1);
+}
+.signup-wizard .member-block:hover { border-color: var(--bg-purple); }
+.signup-wizard .member-block p {
+  font-size: var(--fontSize-6);
+  font-weight: var(--weight-semiBold);
+  letter-spacing: .5px;
+  margin: 0 0 10px;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+.signup-wizard .btn.outline {
+  background: transparent;
+  border: 2px solid var(--border-purple-alpha-30);
+  color: var(--text-white);
+  min-width: 160px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  clip-path: var(--clip-path-3);
+  transition: var(--transition-1);
+}
+.signup-wizard .btn.outline:is(:hover,:focus-visible) {
+  border-color: var(--bg-purple);
+  background: var(--bg-purple-alpha-30);
+}
+.signup-wizard .auth-panel { animation: fadePanel .35s ease; }
+@keyframes fadePanel { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform:translateY(0);} }
+
 /*-----------------------------------*\
   #FOOTER
 \*-----------------------------------*/

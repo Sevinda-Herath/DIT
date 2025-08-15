@@ -109,8 +109,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="preload" as="image" href="../assets/images/hero-banner.png">
   <link rel="preload" as="image" href="../assets/images/hero-banner-bg.png">
   <style>
-    /* highlight errors lightly */
-    .field-error { color: #ff6b6b; font-size: 1.2rem; margin: 8px 0; }
+    /* Responsive tweaks for small screens */
+    @media (max-width: 640px) {
+      #panel-game #game-titles .game-btn-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+        justify-content: stretch;
+      }
+      #panel-game #game-titles .game-btn {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+        min-width: 0;
+        text-align: center;
+      }
+      #panel-game .auth-row {
+        align-items: stretch;
+        flex-direction: row;
+      }
+      #panel-game .auth-row .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body id="top">
@@ -149,68 +169,104 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         <?php endif; ?>
 
-        <div class="auth-panels">
-          <form class="auth-form" action="" method="post" novalidate enctype="multipart/form-data" autocomplete="off">
-            <?= csrf_field() ?>
-            <label for="your-name">Your Name</label>
-            <input id="your-name" class="input-field" type="text" name="full_name" required autocomplete="off">
+        <form class="auth-form" action="" method="post" novalidate enctype="multipart/form-data" autocomplete="off">
+          <?= csrf_field() ?>
+          <!-- Simplified single form wizard -->
 
-            <label for="your-dob">Date of Birth</label>
-            <input id="your-dob" class="input-field" type="date" name="dob" required>
+          <!-- Panels -->
+          <div class="auth-panels">
+            <!-- Details Panel -->
+            <div id="panel-details" class="auth-panel active" role="tabpanel">
+              <label for="your-name">Your Name</label>
+              <input id="your-name" class="input-field" type="text" name="full_name" required autocomplete="off">
 
-            <label for="your-location">Location</label>
-            <input id="your-location" class="input-field" type="text" name="location" required>
+              <label for="your-dob">Date of Birth</label>
+              <input id="your-dob" class="input-field" type="date" name="dob" required>
 
-            <label for="your-university">University/College</label>
-            <input id="your-university" class="input-field" type="text" name="university" required>
+              <label for="your-location">Location</label>
+              <input id="your-location" class="input-field" type="text" name="location" required>
 
-            <label for="your-nic">NIC</label>
-            <input id="your-nic" class="input-field" type="text" name="nic" required>
+              <label for="your-university">University/College</label>
+              <input id="your-university" class="input-field" type="text" name="university" required>
 
-            <label for="your-mobile">Mobile Number</label>
-            <input id="your-mobile" class="input-field" type="tel" name="mobile" required autocomplete="off">
+              <label for="your-nic">NIC</label>
+              <input id="your-nic" class="input-field" type="text" name="nic" required>
 
-            <label for="team-name">Team Name</label>
-            <input id="team-name" class="input-field" type="text" name="team_name" required>
+              <label for="your-mobile">Mobile Number</label>
+              <input id="your-mobile" class="input-field" type="tel" name="mobile" required autocomplete="off">
 
-            <label for="team-logo">Team Logo</label>
-            <input id="team-logo" class="input-field" type="file" name="team_logo" accept="image/*">
-
-            <label for="team-captain">Team Captain</label>
-            <input id="team-captain" class="input-field" type="text" name="team_captain" required>
-
-            <div id="game-titles" class="game-select-group" role="group" aria-labelledby="game-titles-label">
-              <label id="game-titles-label" style="margin-bottom:8px;">Choose The Game(s)</label>
-              <div class="game-btn-row">
-                <label class="game-btn"><input type="checkbox" name="game_titles[]" value="pubg_mobile" class="visually-hidden">PUBG Mobile</label>
-                <label class="game-btn"><input type="checkbox" name="game_titles[]" value="free_fire" class="visually-hidden">Free Fire</label>
-                <label class="game-btn"><input type="checkbox" name="game_titles[]" value="cod_pc" class="visually-hidden">Call of Duty (PC)</label>
-                <label class="game-btn"><input type="checkbox" name="game_titles[]" value="pubg_pc" class="visually-hidden">PUBG (PC)</label>
+              <div class="auth-row" style="margin-top:20px;">
+                <button type="button" class="btn" data-next-tab="game">Next</button>
               </div>
             </div>
 
-            <label for="players-count">Count of Players</label>
-            <select id="players-count" class="input-field" name="players_count" required>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
+            <!-- Game Panel -->
+            <div id="panel-game" class="auth-panel" role="tabpanel" hidden>
+              <label for="team-name">Team Name</label>
+              <input id="team-name" class="input-field" type="text" name="team_name" required>
 
-            <div id="members-container"></div>
+              <label for="team-logo">Team Logo</label>
+              <input id="team-logo" class="input-field" type="file" name="team_logo" accept="image/*">
 
-            <div class="auth-row">
-              <button type="submit" class="btn" data-btn>Submit Registration</button>
+              <label for="team-captain">Team Captain</label>
+              <input id="team-captain" class="input-field" type="text" name="team_captain" required>
+
+              <div id="game-titles" class="game-select-group" role="group" aria-labelledby="game-titles-label">
+                <label id="game-titles-label" style="margin-bottom:8px;">Choose The Game(s)</label>
+                <div class="game-btn-row">
+                  <label class="game-btn"><input type="checkbox" name="game_titles[]" value="pubg_mobile" class="visually-hidden">PUBG Mobile</label>
+                  <label class="game-btn"><input type="checkbox" name="game_titles[]" value="free_fire" class="visually-hidden">Free Fire</label>
+                  <label class="game-btn"><input type="checkbox" name="game_titles[]" value="cod_pc" class="visually-hidden">Call of Duty (PC)</label>
+                  <label class="game-btn"><input type="checkbox" name="game_titles[]" value="pubg_pc" class="visually-hidden">PUBG (PC)</label>
+                </div>
+              </div>
+
+                <label for="players-count">Count of Players</label>
+                <div style="width:100%;">
+                <select id="players-count" class="input-field" name="players_count" required style="width:100%;">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                </div>
+
+              <div class="auth-row" style="margin-top:24px; display:flex; gap:10px;">
+                <button type="button" class="btn outline" data-prev-tab="details">Back</button>
+                <button type="button" class="btn" id="to-members-btn" data-next-tab="members">Next</button>
+                <button type="submit" class="btn" id="submit-from-game" hidden style="display:none;">Submit Registration</button>
+              </div>
+              
             </div>
-          </form>
-        </div>
+
+
+            <!-- Members Panel -->
+            <div id="panel-members" class="auth-panel" role="tabpanel" hidden>
+              <p style="margin-bottom:12px;">Add your member details (auto-trim optional fields if not required)</p>
+              <div id="members-container" class="members-grid" style="display:grid; gap:16px;">
+                <?php for ($i=1;$i<=5;$i++): ?>
+                  <div class="member-block" data-member="<?= $i ?>">
+                    <p style="margin:0 0 6px; font-weight:600;">Member <?= str_pad((string)$i,2,'0',STR_PAD_LEFT) ?></p>
+                    <input class="input-field" type="text" name="member<?= $i ?>_name" placeholder="Full Name" autocomplete="off">
+                    <input class="input-field" type="text" name="member<?= $i ?>_nic" placeholder="NIC" autocomplete="off">
+                    <input class="input-field" type="email" name="member<?= $i ?>_email" placeholder="Email" autocomplete="off">
+                    <input class="input-field" type="tel" name="member<?= $i ?>_phone" placeholder="Phone Number" autocomplete="off">
+                  </div>
+                <?php endfor; ?>
+              </div>
+              <div class="auth-row" style="margin-top:24px; display:flex; gap:10px;">
+                <button type="button" class="btn outline" data-prev-tab="game">Back</button>
+                <button type="submit" class="btn" data-btn>Submit Registration</button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </section>
 
   <footer class="footer">
-    <?php // reuse existing footer blocks (omitted for brevity) ?>
     <div class="section footer-top">
       <div class="container">
         <div class="footer-brand">
@@ -256,35 +312,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn><ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon></a>
   <div class="cursor" data-cursor></div>
-  <script>
-    // Generate member fields according to selected players count
-    (function() {
-      const container = document.getElementById('members-container');
-      const playersSel = document.getElementById('players-count');
-      function render() {
-        const count = parseInt(playersSel.value || '1', 10);
-        container.innerHTML = '';
-        for (let i=1;i<=count;i++) {
-          const block = document.createElement('div');
-          block.className = 'member-block';
-          block.innerHTML = `
-            <p>Member ${String(i).padStart(2,'0')}</p><br>
-            <input class="input-field" type="text" name="member${i}_name" placeholder="Full Name" required>
-            <input class="input-field" type="text" name="member${i}_nic" placeholder="NIC" required>
-            <input class="input-field" type="email" name="member${i}_email" placeholder="Email" required>
-            <input class="input-field" type="tel" name="member${i}_phone" placeholder="Phone Number" required>
-          `;
-          container.appendChild(block);
-        }
-      }
-      playersSel.addEventListener('change', render);
-      render();
-    })();
-  </script>
-   <script>
-    // Signup tabs toggler (3 tabs)
+  <!-- Inline wizard styles removed; using global stylesheet definitions -->
+<script>
+    // Multi-step wizard without visible tabs
     (function () {
-      const tabs = document.querySelectorAll('.auth-tab');
       const panels = {
         details: document.getElementById('panel-details'),
         game: document.getElementById('panel-game'),
@@ -293,16 +324,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       const playersSelect = document.getElementById('players-count');
       const toMembersBtn = document.getElementById('to-members-btn');
       const submitFromGame = document.getElementById('submit-from-game');
-      const allForms = document.querySelectorAll('.auth-panel form');
-      function activate(target, btn) {
-        tabs.forEach(t => t.classList.toggle('active', t === btn));
-        tabs.forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
-        Object.keys(panels).forEach(key => panels[key].classList.toggle('active', key === target));
+      const form = document.querySelector('form.auth-form');
+      // Game selection visual state
+      const gameCheckboxes = document.querySelectorAll('#game-titles .game-btn input[type="checkbox"]');
+      function refreshGameSelections() {
+        gameCheckboxes.forEach(cb => {
+          const label = cb.closest('.game-btn');
+          if (!label) return;
+          label.classList.toggle('selected', cb.checked);
+        });
       }
-      tabs.forEach(btn => {
-        btn.addEventListener('click', () => activate(btn.getAttribute('data-auth-tab'), btn));
+      gameCheckboxes.forEach(cb => {
+        cb.addEventListener('change', refreshGameSelections);
       });
-      // Helpers: custom validation UI
+      refreshGameSelections();
+
+      function showPanel(name) {
+        Object.keys(panels).forEach(key => {
+          const p = panels[key];
+          if (!p) return;
+          if (key === name) {
+            p.classList.add('active');
+            p.removeAttribute('hidden');
+          } else {
+            p.classList.remove('active');
+            p.setAttribute('hidden','hidden');
+          }
+        });
+      }
+
+      // Validation helpers
       function getMessage(el) {
         if (el.validity.valueMissing) return 'This field is required.';
         if (el.validity.typeMismatch && el.type === 'email') return 'Enter a valid email address.';
@@ -322,18 +373,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       function clearError(el) {
         el.classList.remove('invalid');
         const hint = el.nextElementSibling;
-        if (hint && hint.classList && hint.classList.contains('field-error')) {
-          hint.remove();
-        }
+        if (hint && hint.classList && hint.classList.contains('field-error')) hint.remove();
       }
-      function validateForm(form) {
+      function validateCurrent(panelEl) {
         let firstInvalid = null;
-        const fields = form.querySelectorAll('input, select, textarea');
+        const fields = panelEl.querySelectorAll('input, select, textarea');
         fields.forEach(el => {
-          // Only validate visible or required fields
-          const style = window.getComputedStyle(el.closest('.member-block') || el);
-          const isHiddenBlock = (el.closest('.member-block') && (el.closest('.member-block').style.display === 'none' || style.display === 'none'));
-          if (isHiddenBlock) { clearError(el); return; }
           if (!el.checkValidity()) {
             if (!firstInvalid) firstInvalid = el;
             showError(el, getMessage(el));
@@ -345,35 +390,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return true;
       }
 
-      // Next buttons (validate current form before navigating)
+      // Buttons
       document.querySelectorAll('[data-next-tab]').forEach(btn => {
         btn.addEventListener('click', () => {
-          const form = btn.closest('form');
-          if (form && !validateForm(form)) { return; }
           const target = btn.getAttribute('data-next-tab');
-          const tabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === target);
-          if (tabBtn) activate(target, tabBtn);
+          const current = btn.closest('.auth-panel');
+            if (!validateCurrent(current)) return;
+          showPanel(target);
         });
       });
-      // Prev buttons
       document.querySelectorAll('[data-prev-tab]').forEach(btn => {
         btn.addEventListener('click', () => {
           const target = btn.getAttribute('data-prev-tab');
-          const tabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === target);
-          if (tabBtn) activate(target, tabBtn);
+          showPanel(target);
         });
       });
 
-      // Toggle members step based on players count
+      // Members logic
       function setMembersRequired(count) {
-        const blocks = document.querySelectorAll('#panel-members .member-block');
-        blocks.forEach(block => {
-          const idx = parseInt(block.getAttribute('data-member'), 10);
-          const req = idx <= count;
-          block.querySelectorAll('input').forEach(inp => inp.required = req);
+        document.querySelectorAll('#panel-members .member-block').forEach(block => {
+          const idx = parseInt(block.getAttribute('data-member'),10);
+            const req = idx <= count;
+            block.querySelectorAll('input').forEach(inp => inp.required = req);
         });
       }
-
       function updateMembersStep() {
         const val = playersSelect ? playersSelect.value : '';
         const isSolo = val === '1';
@@ -381,51 +421,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           toMembersBtn.style.display = isSolo ? 'none' : '';
           submitFromGame.style.display = isSolo ? '' : 'none';
         }
-        // Show only N member blocks where N = players count (default 5 if not selected)
-        const count = val && !isNaN(parseInt(val, 10)) ? parseInt(val, 10) : 5;
-        const blocks = document.querySelectorAll('#panel-members .member-block');
-        blocks.forEach(block => {
-          const idx = parseInt(block.getAttribute('data-member'), 10);
+        const count = val && !isNaN(parseInt(val,10)) ? parseInt(val,10) : 5;
+        document.querySelectorAll('#panel-members .member-block').forEach(block => {
+          const idx = parseInt(block.getAttribute('data-member'),10);
           const visible = idx <= count;
           block.style.display = visible ? '' : 'none';
-          if (!visible) {
-            block.querySelectorAll('input').forEach(inp => clearError(inp));
-          }
+          if (!visible) block.querySelectorAll('input').forEach(inp => clearError(inp));
         });
         setMembersRequired(count);
-        // If user is on members and switches to solo, send back to game
         if (isSolo && panels.members && panels.members.classList.contains('active')) {
-          const gameTabBtn = Array.from(tabs).find(t => t.getAttribute('data-auth-tab') === 'game');
-          if (gameTabBtn) activate('game', gameTabBtn);
+          showPanel('game');
         }
       }
       if (playersSelect) {
         playersSelect.addEventListener('change', updateMembersStep);
-        // Initialize state on load
         updateMembersStep();
       }
 
-      // Live validation on input/blur
+      // Live validation
       document.querySelectorAll('.auth-panel input, .auth-panel select').forEach(el => {
-        el.addEventListener('input', () => {
-          if (el.checkValidity()) clearError(el);
-        });
-        el.addEventListener('blur', () => {
-          if (!el.checkValidity()) showError(el, getMessage(el)); else clearError(el);
-        });
+        el.addEventListener('input', () => { if (el.checkValidity()) clearError(el); });
+        el.addEventListener('blur', () => { if (!el.checkValidity()) showError(el,getMessage(el)); else clearError(el); });
       });
 
-      // Prevent submission if invalid; show custom messages
-      allForms.forEach(form => {
-        form.addEventListener('submit', (e) => {
-          if (playersSelect) updateMembersStep();
-          if (!validateForm(form)) {
-            e.preventDefault();
+      // Final submit validate everything visible
+      if (form) {
+        form.addEventListener('submit', e => {
+          updateMembersStep();
+          // Validate all visible panels
+          const visiblePanels = Object.values(panels).filter(p => p.classList.contains('active'));
+          for (const vp of visiblePanels) {
+            if (!validateCurrent(vp)) { e.preventDefault(); return; }
           }
+          // Also validate required but currently hidden members if count < 5 (already trimmed)
         });
-      });
+      }
+
+      // Initial state
+      showPanel('details');
     })();
-  </script>
+   </script> 
   <script src="../assets/js/script.js"></script>
   <script src="../assets/js/bg.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
