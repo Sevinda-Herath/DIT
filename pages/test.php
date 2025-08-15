@@ -221,28 +221,51 @@ $members = $membersStmt->fetchAll();
               <!-- Account Overview -->
               <h2 class="u-section-title">Account</h2>
               <div class="u-grid cols-2 u-view-list" id="u-account-view">
+<<<<<<< HEAD
                 <div class="u-item"><span class="u-key">Username</span><span class="u-val"><?= h($profile['username'] ?? '—') ?></span></div>
                 <div class="u-item"><span class="u-key">Email</span><span class="u-val"><?= h($profile['email'] ?? '—') ?></span></div>
+=======
+                <div class="u-item"><span class="u-key">Username</span><span class="u-val" data-view="username"><?= h($profile['username'] ?? '—') ?></span></div>
+                <div class="u-item"><span class="u-key">Email</span><span class="u-val" data-view="email"><?= h($profile['email'] ?? '—') ?></span></div>
+>>>>>>> 9aad29b (test)
               </div>
 
             <h2 class="u-section-title">Your Details</h2>
             <div class="u-grid cols-3 u-view-list" id="u-personal-view">
+<<<<<<< HEAD
               <div class="u-item"><span class="u-key">Full Name</span><span class="u-val"><?= h($profile['full_name'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Date of Birth</span><span class="u-val"><?= h($profile['dob'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Location</span><span class="u-val"><?= h($profile['location'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">University/College</span><span class="u-val"><?= h($profile['university'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">NIC</span><span class="u-val"><?= h($profile['nic'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Mobile</span><span class="u-val"><?= h($profile['mobile'] ?? '—') ?></span></div>
+=======
+              <div class="u-item"><span class="u-key">Full Name</span><span class="u-val" data-view="full_name"><?= h($profile['full_name'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">Date of Birth</span><span class="u-val" data-view="dob"><?= h($profile['dob'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">Location</span><span class="u-val" data-view="location"><?= h($profile['location'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">University/College</span><span class="u-val" data-view="university"><?= h($profile['university'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">NIC</span><span class="u-val" data-view="nic"><?= h($profile['nic'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">Mobile</span><span class="u-val" data-view="mobile"><?= h($profile['mobile'] ?? '—') ?></span></div>
+>>>>>>> 9aad29b (test)
             </div>
 
             <h2 class="u-section-title">Game Details</h2>
             <div class="u-grid cols-3 u-view-list" id="u-game-view">
+<<<<<<< HEAD
               <div class="u-item"><span class="u-key">Team Name</span><span class="u-val"><?= h($profile['team_name'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val"><?= h($profile['team_captain'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Players</span><span class="u-val"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
               <div class="u-item" style="grid-column: 1 / -1;">
                 <span class="u-key">Game Titles</span>
                 <div class="u-badge-wrap">
+=======
+              <div class="u-item"><span class="u-key">Team Name</span><span class="u-val" data-view="team_name"><?= h($profile['team_name'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val" data-view="team_captain"><?= h($profile['team_captain'] ?? '—') ?></span></div>
+              <div class="u-item"><span class="u-key">Players</span><span class="u-val" data-view="players_count"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
+              <div class="u-item" style="grid-column: 1 / -1;">
+                <span class="u-key">Game Titles</span>
+                <div class="u-badge-wrap" data-view="game_titles">
+>>>>>>> 9aad29b (test)
                   <?php if (!empty($profile['game_titles'])): foreach ($profile['game_titles'] as $gt): ?>
                     <span class="u-badge"><?= h(ucwords(str_replace(['_','pc'], [' ', 'PC'], $gt))) ?></span>
                   <?php endforeach; else: ?>
@@ -254,8 +277,14 @@ $members = $membersStmt->fetchAll();
                 <span class="u-key">Team Logo</span>
                 <div class="u-logo">
                   <?php if (!empty($profile['team_logo_path'])): ?>
+<<<<<<< HEAD
                     <img alt="Team logo" src="<?= h($profile['team_logo_path']) ?>" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
                   <?php else: ?>
+=======
+                    <img id="u-logo-preview" data-view-logo src="<?= h($profile['team_logo_path']) ?>" alt="Team logo" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
+                  <?php else: ?>
+                    <img id="u-logo-preview" data-view-logo src="" alt="Team logo" style="display:none;width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
+>>>>>>> 9aad29b (test)
                     <span class="u-hint">No logo uploaded</span>
                   <?php endif; ?>
                 </div>
@@ -277,7 +306,11 @@ $members = $membersStmt->fetchAll();
           </section>
 
 
+<<<<<<< HEAD
                       <!-- EDIT MODE -->
+=======
+            <!-- EDIT MODE -->
+>>>>>>> 9aad29b (test)
             <form id="u-edit" aria-label="Edit profile" class="u-edit" hidden>
               <!-- Account -->
               <h2 class="u-section-title">Account</h2>
@@ -601,6 +634,7 @@ $members = $membersStmt->fetchAll();
           { key: 'pubg_pc', label: 'PUBG (PC)' }
         ];
 
+<<<<<<< HEAD
         // In-memory state only (no persistence). Replace fetchUser() and saveUser() when backend is ready.
         let state = null;
 
@@ -627,6 +661,40 @@ $members = $membersStmt->fetchAll();
               { name: 'Luna Frost', nic: '200056789012', email: 'luna@example.com', phone: '+94 762223355' }
             ]
           });
+=======
+        // Initial state injected from PHP (database)
+        const INITIAL_STATE = <?php
+          $membersArr = array_map(function($m){
+            return [
+              'name' => $m['name'] ?? '',
+              'nic' => $m['nic'] ?? '',
+              'email' => $m['email'] ?? '',
+              'phone' => $m['phone'] ?? ''
+            ];
+          }, $members ?? []);
+          echo json_encode([
+            'username' => $profile['username'] ?? '',
+            'email' => $profile['email'] ?? '',
+            'full_name' => $profile['full_name'] ?? '',
+            'dob' => $profile['dob'] ?? '',
+            'location' => $profile['location'] ?? '',
+            'university' => $profile['university'] ?? '',
+            'nic' => $profile['nic'] ?? '',
+            'mobile' => $profile['mobile'] ?? '',
+            'team_name' => $profile['team_name'] ?? '',
+            'team_captain' => $profile['team_captain'] ?? '',
+            'players_count' => $profile['players_count'] ?? (count($membersArr) ?: 1),
+            'game_titles' => $profile['game_titles'] ?? [],
+            'team_logo_url' => $profile['team_logo_path'] ?? '',
+            'members' => $membersArr
+          ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        ?>;
+
+        let state = null;
+
+        function fetchUser() {
+          return Promise.resolve(INITIAL_STATE);
+>>>>>>> 9aad29b (test)
         }
 
         function saveUser(updates) {
