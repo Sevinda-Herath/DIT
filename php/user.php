@@ -55,7 +55,13 @@ $members = $membersStmt->fetchAll();
       - page-scoped styles (custom classes; use theme variables, avoid site component classes)
     -->
     <style>
-
+      /* Game title selection highlight */
+      #u-game-titles { display:flex; flex-wrap:wrap; gap:8px; }
+      #u-game-titles .u-badge { position:relative; padding:6px 14px; border:1px solid var(--border-purple-alpha-30, #2a2340); border-radius:24px; background:#141018; font-size:13px; line-height:1.2; transition:.25s background, .25s color, .25s border-color, .25s box-shadow; user-select:none; }
+      #u-game-titles .u-badge input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+      #u-game-titles .u-badge.selected { background:linear-gradient(140deg, rgba(120,70,255,0.25), rgba(180,90,255,0.18)); border-color: var(--text-purple,#784bff); box-shadow:0 0 0 1px rgba(120,75,255,0.5), 0 4px 12px -4px rgba(120,75,255,0.35); color:#fff; }
+      #u-game-titles .u-badge:focus-within { outline:2px solid var(--text-purple,#784bff); outline-offset:2px; }
+      @media (max-width:600px){ #u-game-titles .u-badge { flex:1 1 calc(50% - 8px); text-align:center; } }
     </style>
 
     <!-- 
@@ -653,7 +659,15 @@ $members = $membersStmt->fetchAll();
             wrap.innerHTML = `<input id="${id}" type="checkbox" value="${opt.key}" class="u-visually-hidden"> ${opt.label}`;
             const input = wrap.querySelector('input');
             input.checked = selected.includes(opt.key);
+            if (input.checked) wrap.classList.add('selected');
             fields.game_titles_wrap.appendChild(wrap);
+          });
+          // Attach listeners to reflect selection visually
+          fields.game_titles_wrap.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+              const label = cb.closest('label');
+              if (label) label.classList.toggle('selected', cb.checked);
+            });
           });
         }
 
