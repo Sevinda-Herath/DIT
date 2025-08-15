@@ -86,7 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->commit();
             unset($_SESSION['signup_step1']);
             $_SESSION['user_id'] = $userId;
-            redirect('../php/user.php');
+            // Generate recovery codes and store plain list in session for one-time display
+            $_SESSION['recovery_codes_plain'] = generate_recovery_codes($userId);
+            redirect('../php/user.php?show_recovery=1');
         } catch (Throwable $e) {
             $pdo->rollBack();
             $errors[] = 'Failed to create account. Please try again.';

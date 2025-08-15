@@ -124,3 +124,42 @@ function handle_upload(?array $file, array $allowExt = ['png','jpg','jpeg','gif'
 	return ['ok' => true, 'path' => $public, 'error' => null];
 }
 
+// Generate and store new set of 10 recovery codes (returns plain codes)
+function generate_recovery_codes(int $userId): array {
+	$pdo = db();
+	// Remove existing unused codes (or all) then insert new set
+	$pdo->prepare('DELETE FROM recovery_codes WHERE user_id = ?')->execute([$userId]);
+	$codes = [];
+	$ins = $pdo->prepare('INSERT INTO recovery_codes (user_id, code_hash) VALUES (?, ?)');
+	for ($i=0; $i<10; $i++) {
+		// human friendly: 4 groups of 3 alnum (exclude confusing chars)
+		$raw = '';
+		$alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+		for ($g=0;$g<4;$g++) {
+			$seg='';
+			for($c=0;$c<3;$c++) { $seg .= $alphabet[random_int(0, strlen($alphabet)-1)]; }
+			$raw .= ($g?'-':'').$seg;
+		}
+		$codes[] = $raw;
+		$ins->execute([$userId, hash('sha256', $raw)]);
+	}
+	return $codes;
+}
+
+// Verify and consume a recovery code for given email + nic (returns user id or null)
+function consume_recovery_code(string $email, string $nic, string $code): ?int {
+	$pdo = db();
+	$stmt = $pdo->prepare('SELECT u.id FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email = ? AND p.nic = ? LIMIT 1');
+	$stmt->execute([$email, $nic]);
+	$row = $stmt->fetch();
+	if(!$row) return null;
+	$userId = (int)$row['id'];
+	$hash = hash('sha256', $code);
+	$c = $pdo->prepare('SELECT id, used_at FROM recovery_codes WHERE user_id = ? AND code_hash = ? LIMIT 1');
+	$c->execute([$userId, $hash]);
+	$codeRow = $c->fetch();
+	if(!$codeRow || $codeRow['used_at']) return null;
+	$pdo->prepare('UPDATE recovery_codes SET used_at = NOW() WHERE id = ?')->execute([$codeRow['id']]);
+	return $userId;
+}
+

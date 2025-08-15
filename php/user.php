@@ -349,6 +349,20 @@ $members = $membersStmt->fetchAll();
       </div>
     </main>
 
+    <!-- One-time recovery codes overlay -->
+    <div id="recovery-overlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,8,15,0.9);z-index:9999;padding:24px 12px;">
+      <div style="max-width:640px;width:100%;background:#18121f;border:1px solid #2d2240;border-radius:16px;padding:28px 32px;box-shadow:0 10px 40px -8px rgba(0,0,0,0.6);font-family:var(--ff-oxanium,system-ui,sans-serif);">
+        <h2 style="margin:0 0 8px;font-size:1.5rem;letter-spacing:.5px;">Account Recovery Codes</h2>
+        <p style="margin:0 0 16px;font-size:.9rem;line-height:1.5;color:#d3ccde;">Store these <strong>one-time use</strong> codes in a safe place (password manager, printed copy). Each code can be used once if you lose access to your password. You will <strong>not</strong> see them again unless you regenerate a new set (which invalidates old codes).</p>
+        <div id="recovery-codes-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;font-family:monospace;font-size:.95rem;margin:0 0 18px;">
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <button id="recovery-download" class="btn" data-btn type="button">Download (.txt)</button>
+          <button id="recovery-close" class="btn" data-btn type="button" disabled>I've Saved Them</button>
+        </div>
+      </div>
+    </div>
+
         <!-- 
       - #FOOTER
     -->
@@ -864,6 +878,70 @@ $members = $membersStmt->fetchAll();
         // Init
         setMode('view');
         fetchUser().then(s => { state = s; fillView(s); fillEdit(s); });
+
+        // Recovery codes logic
+        const recoveryOverlay = document.getElementById('recovery-overlay');
+        const recoveryList = document.getElementById('recovery-codes-list');
+        const recoveryDownload = document.getElementById('recovery-download');
+        const recoveryClose = document.getElementById('recovery-close');
+
+        const RECOVERY_INITIAL = <?php
+          $show = isset($_GET['show_recovery']) && !empty($_SESSION['recovery_codes_plain']);
+          $codes = $show ? $_SESSION['recovery_codes_plain'] : [];
+          if ($show) { unset($_SESSION['recovery_codes_plain']); }
+          echo json_encode(['show'=>$show,'codes'=>$codes]);
+        ?>;
+
+        function showRecoveryOverlay(codes){
+          recoveryList.innerHTML = '';
+          codes.forEach(c => {
+            const div = document.createElement('div');
+            div.textContent = c;
+            div.style.padding='10px 12px';
+            div.style.background='#221a2b';
+            div.style.border='1px solid #352b46';
+            div.style.borderRadius='8px';
+            div.style.textAlign='center';
+            recoveryList.appendChild(div);
+          });
+          recoveryOverlay.style.display='flex';
+        }
+        if(RECOVERY_INITIAL.show){
+          showRecoveryOverlay(RECOVERY_INITIAL.codes);
+        }
+        recoveryDownload?.addEventListener('click', ()=>{
+          const blob = new Blob([
+            'Nebula Esports Recovery Codes\n\n' +
+            'Generated: ' + (new Date()).toISOString() + '\n\n' +
+            Array.from(recoveryList.children).map(d=>d.textContent).join('\n') + '\n'
+          ], {type:'text/plain'});
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+            a.download = 'nebula-recovery-codes.txt';
+          document.body.appendChild(a); a.click(); a.remove();
+          recoveryClose.disabled = false;
+        });
+        recoveryClose?.addEventListener('click', ()=>{
+          if(!recoveryClose.disabled){ recoveryOverlay.style.display='none'; }
+        });
+
+        // Add regenerate button in profile header (simple)
+        const header = document.querySelector('.u-card-header');
+        if(header){
+          const regenBtn = document.createElement('button');
+          regenBtn.type='button';
+          regenBtn.textContent='Regenerate Recovery Codes';
+          regenBtn.className='btn';
+          regenBtn.style.marginLeft='auto';
+          regenBtn.addEventListener('click', () => {
+            if(!confirm('Generate a new set of recovery codes? Old unused codes will stop working.')) return;
+            fetch('../php/recovery-regenerate.php',{method:'POST',headers:{'X-Requested-With':'fetch'},body:(()=>{const fd=new FormData();fd.append('csrf_token','<?= h($_SESSION['csrf_token'] ?? '') ?>');return fd;})()})
+              .then(r=>r.json())
+              .then(j=>{ if(j.ok){ recoveryClose.disabled = true; showRecoveryOverlay(j.codes); } else alert(j.error||'Failed'); })
+              .catch(()=>alert('Network error'));
+          });
+          header.appendChild(regenBtn);
+        }
       })();
     </script>
 
