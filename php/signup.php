@@ -321,6 +321,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         game: document.getElementById('panel-game'),
         members: document.getElementById('panel-members'),
       };
+      // Auto-fill Member 1 (account owner) from primary details
+      const ownerEmail = '<?= h($base['email'] ?? '') ?>';
+      const ownerSources = {
+        name: document.getElementById('your-name'),
+        nic: document.getElementById('your-nic'),
+        phone: document.getElementById('your-mobile')
+      };
+      const member1 = {
+        name: document.querySelector('[name="member1_name"]'),
+        nic: document.querySelector('[name="member1_nic"]'),
+        email: document.querySelector('[name="member1_email"]'),
+        phone: document.querySelector('[name="member1_phone"]')
+      };
+
+      function syncOwnerToMember1(force = false) {
+        if (member1.name && ownerSources.name) {
+          if (force || !member1.name.value) member1.name.value = ownerSources.name.value;
+        }
+        if (member1.nic && ownerSources.nic) {
+          if (force || !member1.nic.value) member1.nic.value = ownerSources.nic.value;
+        }
+        if (member1.phone && ownerSources.phone) {
+          if (force || !member1.phone.value) member1.phone.value = ownerSources.phone.value;
+        }
+        if (member1.email && ownerEmail) {
+          if (force || !member1.email.value) member1.email.value = ownerEmail;
+        }
+      }
+      // Keep in sync while user edits (only if member field untouched)
+      Object.values(ownerSources).forEach(src => {
+        if (!src) return;
+        src.addEventListener('input', () => syncOwnerToMember1(false));
+      });
       const playersSelect = document.getElementById('players-count');
       const toMembersBtn = document.getElementById('to-members-btn');
       const submitFromGame = document.getElementById('submit-from-game');
@@ -351,6 +384,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             p.setAttribute('hidden','hidden');
           }
         });
+        if (name === 'members') {
+          syncOwnerToMember1(true);
+        }
       }
 
       // Validation helpers
