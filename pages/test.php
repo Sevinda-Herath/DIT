@@ -221,51 +221,28 @@ $members = $membersStmt->fetchAll();
               <!-- Account Overview -->
               <h2 class="u-section-title">Account</h2>
               <div class="u-grid cols-2 u-view-list" id="u-account-view">
-<<<<<<< HEAD
-                <div class="u-item"><span class="u-key">Username</span><span class="u-val"><?= h($profile['username'] ?? '—') ?></span></div>
-                <div class="u-item"><span class="u-key">Email</span><span class="u-val"><?= h($profile['email'] ?? '—') ?></span></div>
-=======
                 <div class="u-item"><span class="u-key">Username</span><span class="u-val" data-view="username"><?= h($profile['username'] ?? '—') ?></span></div>
                 <div class="u-item"><span class="u-key">Email</span><span class="u-val" data-view="email"><?= h($profile['email'] ?? '—') ?></span></div>
->>>>>>> 9aad29b (test)
               </div>
 
             <h2 class="u-section-title">Your Details</h2>
             <div class="u-grid cols-3 u-view-list" id="u-personal-view">
-<<<<<<< HEAD
-              <div class="u-item"><span class="u-key">Full Name</span><span class="u-val"><?= h($profile['full_name'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Date of Birth</span><span class="u-val"><?= h($profile['dob'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Location</span><span class="u-val"><?= h($profile['location'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">University/College</span><span class="u-val"><?= h($profile['university'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">NIC</span><span class="u-val"><?= h($profile['nic'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Mobile</span><span class="u-val"><?= h($profile['mobile'] ?? '—') ?></span></div>
-=======
               <div class="u-item"><span class="u-key">Full Name</span><span class="u-val" data-view="full_name"><?= h($profile['full_name'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Date of Birth</span><span class="u-val" data-view="dob"><?= h($profile['dob'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Location</span><span class="u-val" data-view="location"><?= h($profile['location'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">University/College</span><span class="u-val" data-view="university"><?= h($profile['university'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">NIC</span><span class="u-val" data-view="nic"><?= h($profile['nic'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Mobile</span><span class="u-val" data-view="mobile"><?= h($profile['mobile'] ?? '—') ?></span></div>
->>>>>>> 9aad29b (test)
             </div>
 
             <h2 class="u-section-title">Game Details</h2>
             <div class="u-grid cols-3 u-view-list" id="u-game-view">
-<<<<<<< HEAD
-              <div class="u-item"><span class="u-key">Team Name</span><span class="u-val"><?= h($profile['team_name'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val"><?= h($profile['team_captain'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Players</span><span class="u-val"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
-              <div class="u-item" style="grid-column: 1 / -1;">
-                <span class="u-key">Game Titles</span>
-                <div class="u-badge-wrap">
-=======
               <div class="u-item"><span class="u-key">Team Name</span><span class="u-val" data-view="team_name"><?= h($profile['team_name'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val" data-view="team_captain"><?= h($profile['team_captain'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Players</span><span class="u-val" data-view="players_count"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
               <div class="u-item" style="grid-column: 1 / -1;">
                 <span class="u-key">Game Titles</span>
                 <div class="u-badge-wrap" data-view="game_titles">
->>>>>>> 9aad29b (test)
                   <?php if (!empty($profile['game_titles'])): foreach ($profile['game_titles'] as $gt): ?>
                     <span class="u-badge"><?= h(ucwords(str_replace(['_','pc'], [' ', 'PC'], $gt))) ?></span>
                   <?php endforeach; else: ?>
@@ -277,14 +254,9 @@ $members = $membersStmt->fetchAll();
                 <span class="u-key">Team Logo</span>
                 <div class="u-logo">
                   <?php if (!empty($profile['team_logo_path'])): ?>
-<<<<<<< HEAD
-                    <img alt="Team logo" src="<?= h($profile['team_logo_path']) ?>" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
-                  <?php else: ?>
-=======
                     <img id="u-logo-preview" data-view-logo src="<?= h($profile['team_logo_path']) ?>" alt="Team logo" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
                   <?php else: ?>
                     <img id="u-logo-preview" data-view-logo src="" alt="Team logo" style="display:none;width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
->>>>>>> 9aad29b (test)
                     <span class="u-hint">No logo uploaded</span>
                   <?php endif; ?>
                 </div>
@@ -306,11 +278,7 @@ $members = $membersStmt->fetchAll();
           </section>
 
 
-<<<<<<< HEAD
-                      <!-- EDIT MODE -->
-=======
             <!-- EDIT MODE -->
->>>>>>> 9aad29b (test)
             <form id="u-edit" aria-label="Edit profile" class="u-edit" hidden>
               <!-- Account -->
               <h2 class="u-section-title">Account</h2>
@@ -320,8 +288,8 @@ $members = $membersStmt->fetchAll();
                   <input id="u-username" name="username" type="text" class="u-input" autocomplete="username" required value="<?= h($profile['username'] ?? '') ?>">
                 </div>
                 <div class="u-field">
-                  <label class="u-label" for="u-email">Email</label>
-                  <input id="u-email" name="email" type="email" class="u-input" autocomplete="email" required value="<?= h($profile['email'] ?? '') ?>">
+                  <label class="u-label">Email (view-only)</label>
+                  <input type="text" class="u-input" value="<?= h($profile['email'] ?? '') ?>" readonly disabled>
                 </div>
               </div>
 
@@ -634,34 +602,6 @@ $members = $membersStmt->fetchAll();
           { key: 'pubg_pc', label: 'PUBG (PC)' }
         ];
 
-<<<<<<< HEAD
-        // In-memory state only (no persistence). Replace fetchUser() and saveUser() when backend is ready.
-        let state = null;
-
-        function fetchUser() {
-          // TODO: Replace with real API call to fetch current user by token/session
-          // Returning demo shape aligned with signup fields
-          return Promise.resolve({
-            username: 'nebula_player',
-            email: 'player@example.com',
-            full_name: 'Nova Striker',
-            dob: '2002-07-15',
-            location: 'Colombo',
-            university: 'NIT',
-            nic: '200212345678',
-            mobile: '+94 712345678',
-            team_name: 'Nebula Rangers',
-            team_captain: 'Nova Striker',
-            players_count: 3,
-            game_titles: ['pubg_mobile', 'cod_pc'],
-            team_logo_url: '', // or absolute URL
-            members: [
-              { name: 'Nova Striker', nic: '200212345678', email: 'nova@example.com', phone: '+94 712345678' },
-              { name: 'Orion Blaze', nic: '200145612345', email: 'orion@example.com', phone: '+94 772223344' },
-              { name: 'Luna Frost', nic: '200056789012', email: 'luna@example.com', phone: '+94 762223355' }
-            ]
-          });
-=======
         // Initial state injected from PHP (database)
         const INITIAL_STATE = <?php
           $membersArr = array_map(function($m){
@@ -694,7 +634,6 @@ $members = $membersStmt->fetchAll();
 
         function fetchUser() {
           return Promise.resolve(INITIAL_STATE);
->>>>>>> 9aad29b (test)
         }
 
         function saveUser(updates) {
@@ -719,7 +658,7 @@ $members = $membersStmt->fetchAll();
         const form = edit;
         const fields = {
           username: $('#u-username'),
-          email: $('#u-email'),
+          // email removed from editable fields (view-only)
           full_name: $('#u-full-name'),
           dob: $('#u-dob'),
           location: $('#u-location'),
@@ -738,7 +677,7 @@ $members = $membersStmt->fetchAll();
         // View areas
         const viewAreas = {
           username: $('[data-view="username"]'),
-          email: $('[data-view="email"]'),
+          email: $('[data-view="email"]'), // still displayed
           full_name: $('[data-view="full_name"]'),
           dob: $('[data-view="dob"]'),
           location: $('[data-view="location"]'),
@@ -867,7 +806,7 @@ $members = $membersStmt->fetchAll();
 
         function fillEdit(s) {
           fields.username.value = s.username || '';
-          fields.email.value = s.email || '';
+          // email is view-only; no edit field to populate
           fields.full_name.value = s.full_name || '';
           fields.dob.value = s.dob || '';
           fields.location.value = s.location || '';
@@ -904,7 +843,7 @@ $members = $membersStmt->fetchAll();
           }
           const updates = {
             username: fields.username.value.trim(),
-            email: fields.email.value.trim(),
+            // email omitted (immutable)
             full_name: fields.full_name.value.trim(),
             dob: fields.dob.value,
             location: fields.location.value.trim(),

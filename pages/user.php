@@ -15,75 +15,14 @@ $membersStmt->execute([$userId]);
 $members = $membersStmt->fetchAll();
 
 ?>
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="en">
-=======
 
 <!DOCTYPE html>
 <html lang="en">
 
->>>>>>> 3d50064 (test)
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-  <title>User Profile | Nebula Esports 2025</title>
-  <link rel="shortcut icon" href="../assets/images/nebula-esports.png" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body id="top">
-  <header class="header active" data-header>
-    <div class="container">
-      <a href="#" class="logo"><img src="../assets/images/nebula-esports.png" style ="width:80px; height:auto;" alt="Nebula Esports logo"></a>
-      <nav class="navbar" data-navbar>
-        <ul class="navbar-list">
-          <li class="navbar-item"><a href="../index.html#home" class="navbar-link" data-nav-link>home</a></li>
-          <li class="navbar-item"><a href="../index.html#tournament" class="navbar-link" data-nav-link>tournament</a></li>
-          <li class="navbar-item"><a href="../index.html#news" class="navbar-link" data-nav-link>news</a></li>
-          <li class="navbar-item"><a href="./contact.html" class="navbar-link" data-nav-link>contact</a></li>
-          <li class="navbar-item"><a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
-        </ul>
-      </nav>
-      <a href="./signup-login.php" class="btn" data-btn>ACCOUNT</a>
-      <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
-        <span class="line line-1"></span>
-        <span class="line line-2"></span>
-        <span class="line line-3"></span>
-      </button>
-    </div>
-  </header>
-
-  <main class="u-wrap" id="user-profile">
-    <div class="container">
-      <div class="u-card" data-reveal="bottom">
-        <div class="u-card-header">
-          <h1 class="u-title">Your <span style="color: var(--text-purple);">Profile</span></h1>
-          <div class="u-actions">
-            <a class="u-btn u-btn-primary" href="/pages/user.html">Switch to UI-only Version</a>
-          </div>
-        </div>
-        <div class="u-card-body">
-          <section id="u-view" aria-label="Profile viewer" class="u-view">
-            <h2 class="u-section-title">Account</h2>
-            <div class="u-grid cols-2 u-view-list" id="u-account-view">
-              <div class="u-item"><span class="u-key">Username</span><span class="u-val"><?= h($profile['username'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Email</span><span class="u-val"><?= h($profile['email'] ?? '—') ?></span></div>
-            </div>
-
-            <h2 class="u-section-title">Your Details</h2>
-            <div class="u-grid cols-3 u-view-list" id="u-personal-view">
-              <div class="u-item"><span class="u-key">Full Name</span><span class="u-val"><?= h($profile['full_name'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Date of Birth</span><span class="u-val"><?= h($profile['dob'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Location</span><span class="u-val"><?= h($profile['location'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">University/College</span><span class="u-val"><?= h($profile['university'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">NIC</span><span class="u-val"><?= h($profile['nic'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Mobile</span><span class="u-val"><?= h($profile['mobile'] ?? '—') ?></span></div>
-=======
 
   <!-- 
     - primary meta tags
@@ -116,92 +55,7 @@ $members = $membersStmt->fetchAll();
       - page-scoped styles (custom classes; use theme variables, avoid site component classes)
     -->
     <style>
-      /* User page minimal styles using theme vars; no reuse of site's .btn/.input-field/.auth */
-      .u-wrap { padding: 80px 12px 40px; }
-      .u-card {
-        max-width: 1000px;
-        margin: 30px auto;
-        background: var(--bg-oxford-blue-alpha-90);
-        border: 2px solid var(--border-purple-alpha-30);
-        border-radius: var(--radius-5);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-      .u-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 20px;
-        background-image: var(--gradient-2);
-        border-bottom: 2px solid var(--border-purple-alpha-30);
-      }
-      .u-title { font-size: var(--fontSize-2); text-transform: uppercase; color: var(--text-white); }
-      .u-actions { display: flex; gap: 10px; }
 
-      .u-btn { 
-        min-width: 150px; height: 44px; padding: 0 18px; border-radius: var(--radius-5);
-        display: inline-grid; place-items: center; font-weight: var(--weight-semiBold); letter-spacing: .5px;
-        transition: transform var(--transition-1), opacity var(--transition-1);
-        user-select: none; text-transform: uppercase;
-      }
-      .u-btn:disabled { opacity: .6; cursor: not-allowed; }
-      .u-btn:hover { transform: translateY(-1px); }
-      .u-btn-primary { background-image: var(--gradient-1); color: var(--text-white); border: 0; }
-      .u-btn-ghost { background: transparent; color: var(--text-purple); border: 2px solid var(--border-purple-alpha-30); }
-
-      .u-card-body { padding: 22px; }
-      .u-section-title { font-size: var(--fontSize-3); margin: 10px 0 14px; color: var(--text-white); text-transform: uppercase; }
-      .u-grid { display: grid; gap: 14px; }
-      @media (min-width: 768px) { .u-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 992px) { .u-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; } }
-
-      .u-row { display: grid; gap: 12px; }
-      .u-field { display: grid; gap: 6px; }
-      .u-label { font-size: var(--fontSize-7); color: var(--text-champagne-pink); text-transform: uppercase; }
-      .u-input, .u-select, .u-textarea, .u-file {
-        width: 100%; padding: 14px 12px; border-radius: var(--radius-5); background: var(--bg-oxford-blue-alpha-90);
-        color: var(--text-white); border: 2px solid var(--border-purple-alpha-30); outline: none; font-size: var(--fontSize-5);
-      }
-      .u-input:focus, .u-select:focus, .u-textarea:focus { border-color: var(--bg-purple); background: var(--bg-purple-alpha-30); }
-      .u-hint { font-size: var(--fontSize-8); color: var(--text-gainsboro); opacity: .8; }
-
-      .u-view-list { display: grid; gap: 10px; }
-      .u-item { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--border-purple-alpha-30); border-radius: var(--radius-5); background: var(--bg-oxford-blue-alpha-90); }
-      .u-key { font-size: var(--fontSize-7); text-transform: uppercase; color: var(--text-champagne-pink); }
-      .u-val { color: var(--text-white); }
-
-      .u-members { display: grid; gap: 12px; }
-      .u-member { border: 1px dashed var(--border-purple-alpha-30); border-radius: var(--radius-5); padding: 12px; }
-      .u-member > .u-caption { font-size: var(--fontSize-7); color: var(--text-purple); text-transform: uppercase; margin-bottom: 8px; }
-
-      .u-logo { display: flex; gap: 12px; align-items: center; }
-      .u-logo img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-5); border: 2px solid var(--border-purple-alpha-30); background: #111; }
-
-      .u-toolbar { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
-
-      .u-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border-purple-alpha-30); font-size: var(--fontSize-8); color: var(--text-white); background: rgba(255,255,255,0.04); }
-      .u-badge-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
-
-      /* Tiny helper for visually hidden text (accessibility) */
-      .u-visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; border: 0; padding: 0; margin: -1px; }
-
-      /* Responsive tweaks for header/actions on small screens */
-      @media (max-width: 1024px) {
-        .u-actions { flex-wrap: wrap; }
-        .u-btn { flex: 1 1 180px; }
-      }
-      @media (max-width: 768px) {
-        .u-card-header { flex-direction: column; align-items: stretch; gap: 12px; }
-        .u-title { font-size: 30px; text-align: center; }
-        .u-title span{color: #fff !important;}
-        .u-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        .u-btn { min-width: 0; width: 50%; margin: 0 auto; display: block; font-size: 14px;}
-      }
-      @media (max-width: 480px) {
-        .u-wrap { padding: 70px 10px 30px; }
-        .u-card-header { padding: 16px; }
-        .u-card-body { padding: 16px; }
-      }
     </style>
 
     <!-- 
@@ -250,7 +104,14 @@ $members = $membersStmt->fetchAll();
           </ul>
         </nav>
 
-        <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <form action="/pages/logout.php" method="post" style="display:inline;">
+            <?= csrf_field(); ?>
+            <button type="submit" class="btn" data-btn>LOGOUT</button>
+          </form>
+        <?php else: ?>
+          <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+        <?php endif; ?>
 
         <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
           <span class="line line-1"></span>
@@ -294,26 +155,16 @@ $members = $membersStmt->fetchAll();
               <div class="u-item"><span class="u-key">University/College</span><span class="u-val" data-view="university"><?= h($profile['university'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">NIC</span><span class="u-val" data-view="nic"><?= h($profile['nic'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Mobile</span><span class="u-val" data-view="mobile"><?= h($profile['mobile'] ?? '—') ?></span></div>
->>>>>>> 3d50064 (test)
             </div>
 
             <h2 class="u-section-title">Game Details</h2>
             <div class="u-grid cols-3 u-view-list" id="u-game-view">
-<<<<<<< HEAD
-              <div class="u-item"><span class="u-key">Team Name</span><span class="u-val"><?= h($profile['team_name'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val"><?= h($profile['team_captain'] ?? '—') ?></span></div>
-              <div class="u-item"><span class="u-key">Players</span><span class="u-val"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
-              <div class="u-item" style="grid-column: 1 / -1;">
-                <span class="u-key">Game Titles</span>
-                <div class="u-badge-wrap">
-=======
               <div class="u-item"><span class="u-key">Team Name</span><span class="u-val" data-view="team_name"><?= h($profile['team_name'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Team Captain</span><span class="u-val" data-view="team_captain"><?= h($profile['team_captain'] ?? '—') ?></span></div>
               <div class="u-item"><span class="u-key">Players</span><span class="u-val" data-view="players_count"><?= h((string)($profile['players_count'] ?? '—')) ?></span></div>
               <div class="u-item" style="grid-column: 1 / -1;">
                 <span class="u-key">Game Titles</span>
                 <div class="u-badge-wrap" data-view="game_titles">
->>>>>>> 3d50064 (test)
                   <?php if (!empty($profile['game_titles'])): foreach ($profile['game_titles'] as $gt): ?>
                     <span class="u-badge"><?= h(ucwords(str_replace(['_','pc'], [' ', 'PC'], $gt))) ?></span>
                   <?php endforeach; else: ?>
@@ -325,14 +176,9 @@ $members = $membersStmt->fetchAll();
                 <span class="u-key">Team Logo</span>
                 <div class="u-logo">
                   <?php if (!empty($profile['team_logo_path'])): ?>
-<<<<<<< HEAD
-                    <img alt="Team logo" src="<?= h($profile['team_logo_path']) ?>" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
-                  <?php else: ?>
-=======
                     <img id="u-logo-preview" data-view-logo src="<?= h($profile['team_logo_path']) ?>" alt="Team logo" style="width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
                   <?php else: ?>
                     <img id="u-logo-preview" data-view-logo src="" alt="Team logo" style="display:none;width:72px;height:72px;object-fit:cover;border-radius:5px;border:2px solid var(--border-purple-alpha-30);background:#111;">
->>>>>>> 3d50064 (test)
                     <span class="u-hint">No logo uploaded</span>
                   <?php endif; ?>
                 </div>
@@ -352,65 +198,6 @@ $members = $membersStmt->fetchAll();
               <?php endif; ?>
             </div>
           </section>
-<<<<<<< HEAD
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="section footer-top">
-      <div class="container">
-        <div class="footer-brand">
-          <a href="#" class="logo"><img src="../assets/images/nebula-esports.png" style="width: 100px;" loading="lazy" alt="Nebula Esports logo"></a>
-          <p class="footer-text">Our success in creating business solutions is due in large part to our talented and highly committed team.</p>
-          <ul class="social-list">
-            <li><a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a></li>
-            <li><a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a></li>
-            <li><a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a></li>
-            <li><a href="#" class="social-link"><ion-icon name="logo-youtube"></ion-icon></a></li>
-          </ul>
-        </div>
-        <div class="footer-list">
-          <p class="title footer-list-title has-after">Usefull Links</p>
-          <ul>
-            <li><a href="#" class="footer-link">Home</a></li>
-            <li><a href="#" class="footer-link">Tournaments</a></li>
-            <li><a href="#" class="footer-link">News</a></li>
-            <li><a href="#" class="footer-link">Contact Us</a></li>
-            <li><a href="#" class="footer-link">Rules & Guidelines</a></li>
-          </ul>
-        </div>
-        <div class="footer-list">
-          <p class="title footer-list-title has-after">Contact Us</p>
-          <div class="contact-item"><span class="span">Location:</span>
-            <address class="contact-link">Nebula Institute of Technology <br> Negombo Road, <br> Welisara.</address></div>
-          <div class="contact-item"><span class="span">Join Us:</span>
-            <a href="mailto:info@sevinda-herath.is-a.dev" class="contact-link">info@sevinda-herath.is-a.dev</a></div>
-          <div class="contact-item"><span class="span">Phone:</span>
-            <a href="tel:+12345678910" class="contact-link">+94 (011) 216-2162</a></div>
-        </div>
-        <div class="footer-list">
-          <p class="title footer-list-title has-after">Newsletter Signup</p>
-          <form action="../index.html" method="get" class="footer-form">
-            <input type="email" name="email_address" required placeholder="Your Email" autocomplete="off" class="input-field">
-            <button type="submit" class="btn" data-btn>Subscribe Now</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom"><div class="container"><p class="copyright">&copy; 2025 Sevinda-Herath All Rights Reserved.</p></div></div>
-  </footer>
-
-  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn><ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon></a>
-  <div class="cursor" data-cursor></div>
-  <script src="../assets/js/script.js"></script>
-  <script src="../assets/js/bg.js"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-</html>
-=======
 
 
             <!-- EDIT MODE -->
@@ -421,10 +208,6 @@ $members = $membersStmt->fetchAll();
                 <div class="u-field">
                   <label class="u-label" for="u-username">Username</label>
                   <input id="u-username" name="username" type="text" class="u-input" autocomplete="username" required value="<?= h($profile['username'] ?? '') ?>">
-                </div>
-                <div class="u-field">
-                  <label class="u-label" for="u-email">Email</label>
-                  <input id="u-email" name="email" type="email" class="u-input" autocomplete="email" required value="<?= h($profile['email'] ?? '') ?>">
                 </div>
               </div>
 
@@ -772,10 +555,34 @@ $members = $membersStmt->fetchAll();
         }
 
         function saveUser(updates) {
-          // TODO: Replace with real API call (PUT/PATCH)
-          // For now, merge in-memory and return.
-          state = { ...state, ...updates };
-          return Promise.resolve(state);
+          const fd = new FormData();
+          Object.entries(updates).forEach(([k,v]) => {
+            if (k === 'members' || k === 'game_titles' || k === 'email') return; // email removed
+            fd.append(k, v == null ? '' : v);
+          });
+          (updates.game_titles || []).forEach(g => fd.append('game_titles[]', g));
+          (updates.members || []).forEach((m, idx) => {
+            const i = idx + 1;
+            fd.append('member' + i + '_name', m.name || '');
+            fd.append('member' + i + '_nic', m.nic || '');
+            fd.append('member' + i + '_email', m.email || '');
+            fd.append('member' + i + '_phone', m.phone || '');
+          });
+          if (fields.team_logo.files && fields.team_logo.files[0]) {
+            fd.append('team_logo', fields.team_logo.files[0]);
+          } else if (state && state.team_logo_url) {
+            fd.append('existing_team_logo_path', state.team_logo_url);
+          }
+          // CSRF token from PHP session
+          fd.append('csrf_token', '<?= h($_SESSION['csrf_token'] ?? '') ?>');
+
+          return fetch('../includes/profile-save.php', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(json => {
+              if (!json.ok) throw new Error(json.error || 'Save failed');
+              state = json.data;
+              return state;
+            });
         }
 
         const $ = (sel, root = document) => root.querySelector(sel);
@@ -793,7 +600,6 @@ $members = $membersStmt->fetchAll();
         const form = edit;
         const fields = {
           username: $('#u-username'),
-          email: $('#u-email'),
           full_name: $('#u-full-name'),
           dob: $('#u-dob'),
           location: $('#u-location'),
@@ -941,7 +747,6 @@ $members = $membersStmt->fetchAll();
 
         function fillEdit(s) {
           fields.username.value = s.username || '';
-          fields.email.value = s.email || '';
           fields.full_name.value = s.full_name || '';
           fields.dob.value = s.dob || '';
           fields.location.value = s.location || '';
@@ -970,15 +775,15 @@ $members = $membersStmt->fetchAll();
           const members = [];
           for (let i = 1; i <= players_count; i++) {
             members.push({
-              name: fd.get(`member${i}_name`) || '',
-              nic: fd.get(`member${i}_nic`) || '',
-              email: fd.get(`member${i}_email`) || '',
-              phone: fd.get(`member${i}_phone`) || ''
-            });
+                name: fd.get(`member${i}_name`) || '',
+                nic: fd.get(`member${i}_nic`) || '',
+                email: fd.get(`member${i}_email`) || '',
+                phone: fd.get(`member${i}_phone`) || ''
+              });
           }
           const updates = {
             username: fields.username.value.trim(),
-            email: fields.email.value.trim(),
+            // email view-only (not editable)
             full_name: fields.full_name.value.trim(),
             dob: fields.dob.value,
             location: fields.location.value.trim(),
@@ -1035,10 +840,11 @@ $members = $membersStmt->fetchAll();
         form.addEventListener('submit', (e) => {
           e.preventDefault();
           const updates = collectEdit();
-          saveUser(updates).then((s) => {
-            fillView(s);
-            setMode('view');
-          });
+          saveBtn.disabled = true;
+          saveUser(updates)
+            .then((s) => { fillView(s); setMode('view'); })
+            .catch(err => { alert(err.message || 'Failed to save'); })
+            .finally(() => { saveBtn.disabled = false; });
         });
 
         // Init
@@ -1057,4 +863,3 @@ $members = $membersStmt->fetchAll();
   </body>
 
   </html>
->>>>>>> 3d50064 (test)

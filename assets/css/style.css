@@ -970,7 +970,92 @@ body {
 
 
 
+      /* User page minimal styles using theme vars; no reuse of site's .btn/.input-field/.auth */
+      .u-wrap { padding: 80px 12px 40px; }
+      .u-card {
+        max-width: 1000px;
+        margin: 30px auto;
+        background: var(--bg-oxford-blue-alpha-90);
+        border: 2px solid var(--border-purple-alpha-30);
+        border-radius: var(--radius-5);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .u-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px;
+        background-image: var(--gradient-2);
+        border-bottom: 2px solid var(--border-purple-alpha-30);
+      }
+      .u-title { font-size: var(--fontSize-2); text-transform: uppercase; color: var(--text-white); }
+      .u-actions { display: flex; gap: 10px; }
 
+      .u-btn { 
+        min-width: 150px; height: 44px; padding: 0 18px; border-radius: var(--radius-5);
+        display: inline-grid; place-items: center; font-weight: var(--weight-semiBold); letter-spacing: .5px;
+        transition: transform var(--transition-1), opacity var(--transition-1);
+        user-select: none; text-transform: uppercase;
+      }
+      .u-btn:disabled { opacity: .6; cursor: not-allowed; }
+      .u-btn:hover { transform: translateY(-1px); }
+      .u-btn-primary { background-image: var(--gradient-1); color: var(--text-white); border: 0; }
+      .u-btn-ghost { background: transparent; color: var(--text-purple); border: 2px solid var(--border-purple-alpha-30); }
+
+      .u-card-body { padding: 22px; }
+      .u-section-title { font-size: var(--fontSize-3); margin: 10px 0 14px; color: var(--text-white); text-transform: uppercase; }
+      .u-grid { display: grid; gap: 14px; }
+      @media (min-width: 768px) { .u-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 992px) { .u-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+      .u-row { display: grid; gap: 12px; }
+      .u-field { display: grid; gap: 6px; }
+      .u-label { font-size: var(--fontSize-7); color: var(--text-champagne-pink); text-transform: uppercase; }
+      .u-input, .u-select, .u-textarea, .u-file {
+        width: 100%; padding: 14px 12px; border-radius: var(--radius-5); background: var(--bg-oxford-blue-alpha-90);
+        color: var(--text-white); border: 2px solid var(--border-purple-alpha-30); outline: none; font-size: var(--fontSize-5);
+      }
+      .u-input:focus, .u-select:focus, .u-textarea:focus { border-color: var(--bg-purple); background: var(--bg-purple-alpha-30); }
+      .u-hint { font-size: var(--fontSize-8); color: var(--text-gainsboro); opacity: .8; }
+
+      .u-view-list { display: grid; gap: 10px; }
+      .u-item { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--border-purple-alpha-30); border-radius: var(--radius-5); background: var(--bg-oxford-blue-alpha-90); }
+      .u-key { font-size: var(--fontSize-7); text-transform: uppercase; color: var(--text-champagne-pink); }
+      .u-val { color: var(--text-white); }
+
+      .u-members { display: grid; gap: 12px; }
+      .u-member { border: 1px dashed var(--border-purple-alpha-30); border-radius: var(--radius-5); padding: 12px; }
+      .u-member > .u-caption { font-size: var(--fontSize-7); color: var(--text-purple); text-transform: uppercase; margin-bottom: 8px; }
+
+      .u-logo { display: flex; gap: 12px; align-items: center; }
+      .u-logo img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius-5); border: 2px solid var(--border-purple-alpha-30); background: #111; }
+
+      .u-toolbar { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+      .u-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border-purple-alpha-30); font-size: var(--fontSize-8); color: var(--text-white); background: rgba(255,255,255,0.04); }
+      .u-badge-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+
+      /* Tiny helper for visually hidden text (accessibility) */
+      .u-visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; border: 0; padding: 0; margin: -1px; }
+
+      /* Responsive tweaks for header/actions on small screens */
+      @media (max-width: 1024px) {
+        .u-actions { flex-wrap: wrap; }
+        .u-btn { flex: 1 1 180px; }
+      }
+      @media (max-width: 768px) {
+        .u-card-header { flex-direction: column; align-items: stretch; gap: 12px; }
+        .u-title { font-size: 30px; text-align: center; }
+        .u-title span{color: #fff !important;}
+        .u-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        .u-btn { min-width: 0; width: 50%; margin: 0 auto; display: block; font-size: 14px;}
+      }
+      @media (max-width: 480px) {
+        .u-wrap { padding: 70px 10px 30px; }
+        .u-card-header { padding: 16px; }
+        .u-card-body { padding: 16px; }
+      }
 
 /*-----------------------------------*\
   #BACK TO TOP
