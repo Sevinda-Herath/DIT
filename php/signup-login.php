@@ -127,6 +127,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       .auth-errors-title { font-size: 15px; }
       .auth-errors li { font-size: 13.5px; }
     }
+  /* Password strength styles */
+  .pw-strength { margin-top:10px; background:#101010; border:1px solid #262626; border-radius:8px; padding:12px 14px 14px; font-size:12px; line-height:1.35; position:relative; }
+  .pw-strength[data-score="0"] { --pw-color:#ff4d4d; }
+  .pw-strength[data-score="1"] { --pw-color:#ff784d; }
+  .pw-strength[data-score="2"] { --pw-color:#ffb84d; }
+  .pw-strength[data-score="3"] { --pw-color:#f2d64b; }
+  .pw-strength[data-score="4"] { --pw-color:#5cc16a; }
+  .pw-strength[data-score="5"] { --pw-color:#27c46a; }
+  .pw-header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin:0 0 8px; font-weight:600; letter-spacing:.4px; }
+  .pw-header strong { color:var(--pw-color,#888); }
+  .pw-meter { height:7px; background:#1d1d1d; border-radius:5px; overflow:hidden; position:relative; margin:0 0 8px; }
+  .pw-meter span { display:block; height:100%; width:0; background:var(--pw-color,#444); transition:width .35s ease, background .35s ease; }
+  .pw-criteria { list-style:none; margin:0; padding:0; display:grid; gap:5px; }
+  .pw-criteria li { display:flex; align-items:center; gap:6px; color:#b5b5b5; }
+  .pw-criteria li .bullet { width:10px; height:10px; border-radius:50%; background:#444; box-shadow:0 0 0 1px #333 inset; transition:background .3s ease, transform .3s; }
+  .pw-criteria li.ok .bullet { background:#27c46a; box-shadow:0 0 0 1px #1d9a52 inset; transform:scale(1.05); }
+  .pw-criteria li.ok { color:#d9f7e3; }
+  .pw-disabled { opacity:.55; pointer-events:none; }
+  @media (min-width:600px){ .pw-strength { font-size:12.5px; } }
   </style>
 </head>
 <body id="top">
@@ -210,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <label for="signup-password" class="visually-hidden">Password</label>
               <input id="signup-password" class="input-field" type="password" name="password" placeholder="Password" required autocomplete="new-password">
+              <div id="password-strength" class="pw-strength" aria-live="polite" hidden></div>
 
               <label for="signup-confirm" class="visually-hidden">Confirm Password</label>
               <input id="signup-confirm" class="input-field" type="password" name="confirm" placeholder="Confirm Password" required autocomplete="new-password">
@@ -283,6 +303,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="cursor" data-cursor></div>
   <script src="../assets/js/script.js"></script>
   <script src="../assets/js/bg.js"></script>
+  <script>
+    (function(){
+      const pw = document.getElementById('signup-password');
+      const confirm = document.getElementById('signup-confirm');
+      const container = document.getElementById('password-strength');
+      const signupForm = document.querySelector('#panel-signup form.auth-form');
+      const submitBtn = signupForm ? signupForm.querySelector('button[type="submit"]') : null;
+      if(!pw || !container) return;
+
+  // Build static structure once (lazy visible)
+  container.classList.add('pw-strength');
+  container.innerHTML = `
+        <div class="pw-header">Password Strength: <strong class="pw-label">&nbsp;</strong><span class="pw-count" style="margin-left:auto;font-weight:500;color:#888;font-size:11px;"></span></div>
+        <div class="pw-meter"><span></span></div>
+        <ul class="pw-criteria">
+          <li data-rule="length8"><span class="bullet"></span>8+ chars</li>
+          <li data-rule="length12"><span class="bullet"></span>12+ chars (better)</li>
+          <li data-rule="case"><span class="bullet"></span>Upper & lower case</li>
+          <li data-rule="number"><span class="bullet"></span>Number</li>
+          <li data-rule="symbol"><span class="bullet"></span>Symbol</li>
+        </ul>`;
+
+      const labelEl = container.querySelector('.pw-label');
+      const countEl = container.querySelector('.pw-count');
+      const meterBar = container.querySelector('.pw-meter span');
+      const criteriaEls = container.querySelectorAll('.pw-criteria li');
+
+      function assess(p){
+        const tests = {
+          length8: p.length >= 8,
+          length12: p.length >= 12,
+          lower: /[a-z]/.test(p),
+          upper: /[A-Z]/.test(p),
+          number: /[0-9]/.test(p),
+          symbol: /[^A-Za-z0-9]/.test(p)
+        };
+        let score = 0;
+        if (tests.length8) score++;
+        if (tests.length12) score++;
+        if (tests.lower && tests.upper) score++;
+        if (tests.number) score++;
+        if (tests.symbol) score++;
+        return {tests, score};
+      }
+      const labels = ['Very Weak','Weak','Fair','Good','Strong','Very Strong'];
+
+      function update(){
+        const val = pw.value;
+        const {tests, score} = assess(val);
+        container.setAttribute('data-score', String(score));
+        meterBar.style.width = ((score/5)*100) + '%';
+        labelEl.textContent = labels[score];
+        countEl.textContent = val.length + ' chars';
+        criteriaEls.forEach(li => {
+          const rule = li.getAttribute('data-rule');
+          let ok = false;
+            if (rule === 'length8') ok = tests.length8;
+            else if (rule === 'length12') ok = tests.length12;
+            else if (rule === 'case') ok = tests.lower && tests.upper;
+            else if (rule === 'number') ok = tests.number;
+            else if (rule === 'symbol') ok = tests.symbol;
+          li.classList.toggle('ok', ok);
+        });
+        // No longer enforce minimum strength; just display feedback
+        if(submitBtn){
+          if(submitBtn.disabled){
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('pw-disabled');
+          }
+        }
+        if(confirm){
+          if (val && confirm.value && confirm.value !== val) {
+            confirm.setCustomValidity('Passwords do not match');
+          } else {
+            confirm.setCustomValidity('');
+          }
+        }
+      }
+  // Show only while password field focused
+  pw.addEventListener('focus', () => { container.hidden = false; });
+  pw.addEventListener('blur', () => { container.hidden = true; });
+  pw.addEventListener('input', update);
+      if(confirm) confirm.addEventListener('input', update);
+  update();
+    })();
+  </script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
