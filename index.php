@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/includes/bootstrap.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,17 +71,20 @@
           </li>
 
           <li class="navbar-item">
-            <a href="./pages/contact.html" class="navbar-link" data-nav-link>contact</a>
+            <a href="./php/contact.php" class="navbar-link" data-nav-link>contact</a>
           </li>
           <li class="navbar-item">
-            <a href="./pages/rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a>
+            <a href="./php/rules.php" class="navbar-link" data-nav-link>Rules & Guidelines</a>
           </li>
 
         </ul>
       </nav>
 
-      <a href="./php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
-
+      <?php if(isset($_SESSION['user_id'])): ?>
+        <a href="./php/user.php" class="btn" data-btn>MY PROFILE</a>
+      <?php else: ?>
+        <a href="./php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <?php endif; ?>
 
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>

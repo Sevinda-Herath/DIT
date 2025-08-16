@@ -163,7 +163,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <li class="navbar-item"><a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
         </ul>
       </nav>
-      <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <?php if(isset($_SESSION['user_id'])): ?>
+        <a href="../php/user.php" class="btn" data-btn>MY PROFILE</a>
+      <?php else: ?>
+        <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <?php endif; ?>
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>

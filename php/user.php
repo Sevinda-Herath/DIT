@@ -62,6 +62,18 @@ $members = $membersStmt->fetchAll();
       #u-game-titles .u-badge.selected { background:linear-gradient(140deg, rgba(120,70,255,0.25), rgba(180,90,255,0.18)); border-color: var(--text-purple,#784bff); box-shadow:0 0 0 1px rgba(120,75,255,0.5), 0 4px 12px -4px rgba(120,75,255,0.35); color:#fff; }
       #u-game-titles .u-badge:focus-within { outline:2px solid var(--text-purple,#784bff); outline-offset:2px; }
       @media (max-width:600px){ #u-game-titles .u-badge { flex:1 1 calc(50% - 8px); text-align:center; } }
+      /* Constrain regenerate button height on small screens */
+      #u-recovery-regenerate.u-btn { 
+        height:44px; 
+        max-height:48px; 
+        padding:0 26px; 
+        display:inline-grid; 
+        place-items:center; 
+        white-space:nowrap; 
+      }
+      @media (max-width:480px){
+        #u-recovery-regenerate.u-btn { width:100%; }
+      }
     </style>
 
     <!-- 
@@ -348,6 +360,15 @@ $members = $membersStmt->fetchAll();
 
       </div>
     </main>
+
+    <!-- Recovery codes action container (single button) -->
+    <div class="container" style="margin-top:10px;">
+      <div class="u-recovery-actions" style="max-width:1000px;margin:0 auto 30px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 20px;background:var(--bg-oxford-blue-alpha-90);border:2px solid var(--border-purple-alpha-30);border-radius:var(--radius-5);box-shadow:var(--shadow);">
+        <br>
+        <button type="button" id="u-recovery-regenerate" class="btn">Regnrate Recovery Codes</button>
+        <p class="footer-text" style="text-align:center;max-width:680px;">Regenerating creates a fresh set of one-time codes and invalidates all unused previous codes.</p>
+      </div>
+    </div>
 
     <!-- One-time recovery codes overlay -->
     <div id="recovery-overlay" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,8,15,0.9);z-index:9999;padding:24px 12px;">
@@ -925,23 +946,15 @@ $members = $membersStmt->fetchAll();
           if(!recoveryClose.disabled){ recoveryOverlay.style.display='none'; }
         });
 
-        // Add regenerate button in profile header (simple)
-        const header = document.querySelector('.u-card-header');
-        if(header){
-          const regenBtn = document.createElement('button');
-          regenBtn.type='button';
-          regenBtn.textContent='Regenerate Recovery Codes';
-          regenBtn.className='btn';
-          regenBtn.style.marginLeft='auto';
-          regenBtn.addEventListener('click', () => {
-            if(!confirm('Generate a new set of recovery codes? Old unused codes will stop working.')) return;
-            fetch('../php/recovery-regenerate.php',{method:'POST',headers:{'X-Requested-With':'fetch'},body:(()=>{const fd=new FormData();fd.append('csrf_token','<?= h($_SESSION['csrf_token'] ?? '') ?>');return fd;})()})
-              .then(r=>r.json())
-              .then(j=>{ if(j.ok){ recoveryClose.disabled = true; showRecoveryOverlay(j.codes); } else alert(j.error||'Failed'); })
-              .catch(()=>alert('Network error'));
-          });
-          header.appendChild(regenBtn);
-        }
+        // Regenerate recovery codes button (in separate container)
+        const regenBtn = document.getElementById('u-recovery-regenerate');
+        regenBtn?.addEventListener('click', () => {
+          if(!confirm('Generate a new set of recovery codes? Old unused codes will stop working.')) return;
+          fetch('../php/recovery-regenerate.php',{method:'POST',headers:{'X-Requested-With':'fetch'},body:(()=>{const fd=new FormData();fd.append('csrf_token','<?= h($_SESSION['csrf_token'] ?? '') ?>');return fd;})()})
+            .then(r=>r.json())
+            .then(j=>{ if(j.ok){ recoveryClose.disabled = true; showRecoveryOverlay(j.codes); } else alert(j.error||'Failed'); })
+            .catch(()=>alert('Network error'));
+        });
       })();
     </script>
 
