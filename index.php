@@ -7,36 +7,31 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 
-    - primary meta tags
-  -->
+  <!-- primary meta tags -->
+
   <title>Home | Nebula Esports 2025 </title>
   <meta name="title" content="Nebula Esports 2025 - BY Nebula Esports">
   <meta name="description" content="Nebula Esports 2025 is your gateway to the latest tournaments, gaming news, and team updates. Join our community and experience epic matches, headlines, and more.">
 
-  <!-- 
-    - favicon
-  -->
+  <!-- favicon -->
+
   <link rel="shortcut icon" href="./assets/images/nebula-esports.png" type="image/png">
 
 
-  <!-- 
-    - google font link
-  -->
+  <!-- google font link -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap"
     rel="stylesheet">
 
-  <!-- 
-    - custom css link
-  -->
+  <!-- custom css link -->
+
   <link rel="stylesheet" href="./assets/css/style.css">
 
-  <!-- 
-    - preload images
-  -->
+  <!-- preload images -->
+
   <link rel="preload" as="image" href="./assets/images/hero-banner.png">
   <link rel="preload" as="image" href="./assets/images/hero-banner-bg.png">
 
@@ -44,9 +39,7 @@
 
 <body id="top">
 
-  <!-- 
-    - #HEADER
-  -->
+  <!-- Header -->
 
   <header class="header active" data-header>
     <div class="container">
@@ -54,6 +47,8 @@
       <a href="#" class="logo">
         <img src="./assets/images/nebula-esports.png" style ="width:80px; height:auto;" alt="unigine home">
       </a>
+
+      <!-- Navbar -->
 
       <nav class="navbar" data-navbar>
         <ul class="navbar-list">
@@ -79,6 +74,8 @@
 
         </ul>
       </nav>
+      
+      <!-- Nav Buttons -->
 
       <?php if(isset($_SESSION['user_id'])): ?>
         <a href="./php/user.php" class="btn" data-btn>MY PROFILE</a>
@@ -102,9 +99,7 @@
   <main>
     <article>
 
-      <!-- 
-        - #HERO
-      -->
+      <!-- Hero -->
 
       <div class="hero has-before" id="home">
         <div class="container">
@@ -113,7 +108,7 @@
 
           <h1 class="h1 title hero-title"> NEBULA ESPORTS CHAMPIONSHIP<br>-- 2025 --</h1>
 
-          <a href="#" class="btn" data-btn>Register Now &#x2694;</a>
+          <a href="./php/signup-login.php?tab=signup" class="btn" data-btn>Register Now &#x2694;</a>
 
           <div class="hero-banner">
             <img src="./assets/images/hero-banner.png" width="850" height="414" alt="hero banner" class="w-100">
@@ -124,13 +119,7 @@
         </div>
       </div>
 
-
-
-
-
-      <!-- 
-        - #UPCOMING
-      -->
+      <!-- Upcoming Matches -->
 
       <section class="section upcoming" aria-labelledby="upcoming-label" id="tournament">
         <div class="container">
@@ -282,13 +271,7 @@
         </div>
       </section>
 
-
-
-
-
-      <!-- 
-        - #NEWS
-      -->
+      <!-- News -->
 
       <section class="section news" aria-label="our latest news" id="news">
         <div class="container">
@@ -445,13 +428,7 @@
     </article>
   </main>
 
-
-
-
-
-  <!-- 
-    - #FOOTER
-  -->
+  <!-- Footer -->
 
   <footer class="footer">
 

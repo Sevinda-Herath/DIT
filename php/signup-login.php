@@ -6,6 +6,11 @@ verify_csrf();
 $errors = [];
 $activeTab = 'login';
 
+// Allow direct tab selection via query string, e.g. signup-login.php?tab=signup
+if (isset($_GET['tab']) && $_GET['tab'] === 'signup') {
+  $activeTab = 'signup';
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'login') {
         $activeTab = 'login';
@@ -156,18 +161,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </a>
       <nav class="navbar" data-navbar>
         <ul class="navbar-list">
-          <li class="navbar-item"><a href="../index.html#home" class="navbar-link" data-nav-link>home</a></li>
-          <li class="navbar-item"><a href="../index.html#tournament" class="navbar-link" data-nav-link>tournament</a></li>
-          <li class="navbar-item"><a href="../index.html#news" class="navbar-link" data-nav-link>news</a></li>
-          <li class="navbar-item"><a href="./contact.html" class="navbar-link" data-nav-link>contact</a></li>
-          <li class="navbar-item"><a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
+          <li class="navbar-item"><a href="../index.php#home" class="navbar-link" data-nav-link>home</a></li>
+          <li class="navbar-item"><a href="../index.php#tournament" class="navbar-link" data-nav-link>tournament</a></li>
+          <li class="navbar-item"><a href="../index.php#news" class="navbar-link" data-nav-link>news</a></li>
+          <li class="navbar-item"><a href="./contact.php" class="navbar-link" data-nav-link>contact</a></li>
+          <li class="navbar-item"><a href="./rules.php" class="navbar-link" data-nav-link>Rules & Guidelines</a></li>
         </ul>
       </nav>
+
       <?php if(isset($_SESSION['user_id'])): ?>
         <a href="../php/user.php" class="btn" data-btn>MY PROFILE</a>
       <?php else: ?>
         <a href="../php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
       <?php endif; ?>
+
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
@@ -214,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="checkbox">
                   <input type="checkbox" name="remember" checked> <span>Remember me</span>
                 </label>
-                <a href="../php/forgot-password.php" class="link-sm">Forgot password?</a>
+                <a href="./forgot-password.php" class="link-sm">Forgot password?</a>
               </div>
 
               <button type="submit" class="btn" data-btn>Login</button>

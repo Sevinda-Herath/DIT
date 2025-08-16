@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/../includes/bootstrap.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,30 +59,34 @@
         <ul class="navbar-list">
 
           <li class="navbar-item">
-            <a href="../index.html#home" class="navbar-link" data-nav-link>home</a>
+            <a href="../index.php#home" class="navbar-link" data-nav-link>home</a>
           </li>
 
           <li class="navbar-item">
-            <a href="../index.html#tournament" class="navbar-link" data-nav-link>tournament</a>
+            <a href="../index.php#tournament" class="navbar-link" data-nav-link>tournament</a>
           </li>
 
           <li class="navbar-item">
-            <a href="../index.html#news" class="navbar-link" data-nav-link>news</a>
+            <a href="../index.php#news" class="navbar-link" data-nav-link>news</a>
           </li>
 
           <li class="navbar-item">
-            <a href="./contact.html" class="navbar-link" data-nav-link>contact</a>
+            <a href="./contact.php" class="navbar-link" data-nav-link>contact</a>
           </li>
           <li class="navbar-item">
-            <a href="rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a>
+            <a href="./rules.php" class="navbar-link" data-nav-link>Rules & Guidelines</a>
           </li>
 
         </ul>
       </nav>
 
-      <a href="./signup-login.html" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <?php if(isset($_SESSION['user_id'])): ?>
+        <a href="./user.php" class="btn" data-btn>MY PROFILE</a>
+      <?php else: ?>
+        <a href="./signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+      <?php endif; ?>
 
-      <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
+        <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
         <span class="line line-1"></span>
         <span class="line line-2"></span>
         <span class="line line-3"></span>

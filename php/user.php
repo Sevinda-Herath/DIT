@@ -101,22 +101,22 @@ $members = $membersStmt->fetchAll();
           <ul class="navbar-list">
 
             <li class="navbar-item">
-              <a href="../index.html#home" class="navbar-link" data-nav-link>home</a>
+              <a href="../index.php#home" class="navbar-link" data-nav-link>home</a>
             </li>
 
             <li class="navbar-item">
-              <a href="../index.html#tournament" class="navbar-link" data-nav-link>tournament</a>
+              <a href="../index.php#tournament" class="navbar-link" data-nav-link>tournament</a>
             </li>
 
             <li class="navbar-item">
-              <a href="../index.html#news" class="navbar-link" data-nav-link>news</a>
+              <a href="../index.php#news" class="navbar-link" data-nav-link>news</a>
             </li>
 
             <li class="navbar-item">
-              <a href="./contact.html" class="navbar-link" data-nav-link>contact</a>
+              <a href="./contact.php" class="navbar-link" data-nav-link>contact</a>
             </li>
             <li class="navbar-item">
-              <a href="./rules.html" class="navbar-link" data-nav-link>Rules & Guidelines</a>
+              <a href="./rules.php" class="navbar-link" data-nav-link>Rules & Guidelines</a>
             </li>
 
           </ul>
