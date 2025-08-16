@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>404 | Lost In The Nebula</title>
+<link rel="shortcut icon" href="assets/images/nebula-esports.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Work+Sans:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+:root { --glow:#ff0066; --accent:#6a4dff; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:'Work Sans',system-ui,sans-serif; min-height:100svh; background:#05060a; color:#d6dae2; display:flex; flex-direction:column; overflow:hidden; }
+main { flex:1; display:grid; place-items:center; padding:clamp(2rem,4vw,4rem) 1rem; position:relative; }
+canvas#bg { position:absolute; inset:0; width:100%; height:100%; z-index:0; }
+.noise { position:absolute; inset:0; pointer-events:none; mix-blend-mode:overlay; opacity:.18; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E"); z-index:1; }
+.card { position:relative; z-index:5; width:min(100%,980px); background:radial-gradient(circle at 28% 25%,#161b24,#0a0d12 60%); border:1px solid #1d232e; border-radius:28px; padding:clamp(1.6rem,3vw,3rem); box-shadow:0 14px 42px -12px #000,0 0 0 1px rgba(255,255,255,0.04); overflow:hidden; }
+.card:before,.card:after { content:""; position:absolute; width:60%; aspect-ratio:1; filter:blur(70px); opacity:.22; pointer-events:none; }
+.card:before { top:-35%; left:-30%; background:radial-gradient(circle,#ff0d74,transparent 60%); animation:pulse 9s linear infinite; }
+.card:after { bottom:-30%; right:-25%; background:radial-gradient(circle,#6a4dff,transparent 60%); animation:pulse 11s linear infinite reverse; }
+@keyframes pulse { 0%,100% { transform:scale(1);} 50% { transform:scale(1.25);} }
+.h404 { font-family:'Oxanium',cursive; font-size:clamp(4rem,11vw,14rem); line-height:.8; margin:0; display:flex; gap:.35em; font-weight:700; letter-spacing:-2.5px; background:linear-gradient(120deg,#ffffff,#ff8ab8,#ffc1a1 60%,#fff); background-clip:text; -webkit-background-clip:text; color:#fff; -webkit-text-fill-color:transparent; text-shadow:0 10px 34px rgba(255,0,102,.3); }
+.h404 span { animation:float 6s ease-in-out infinite; display:inline-block; }
+.h404 span:nth-child(2n){ animation-duration:7s; animation-delay:.4s; }
+.h404 span:nth-child(3n){ animation-duration:5.5s; animation-delay:.8s; }
+@keyframes float { 0%,100% { transform:translateY(0);} 25% { transform:translateY(-14px);} 50% { transform:translateY(2px);} 75% { transform:translateY(10px);} }
+.subtitle { font-size:clamp(1.3rem,2.2vw,2.4rem); font-weight:600; margin:1.1rem 0 1.4rem; background:linear-gradient(90deg,#fff,#ffe5f0); background-clip:text; -webkit-background-clip:text; color:#eef2f6; -webkit-text-fill-color:transparent; }
+.desc { margin:0 0 2rem; max-width:720px; line-height:1.6; font-size:1.02rem; color:#c4c9d2; }
+.actions { display:flex; flex-wrap:wrap; gap:.85rem; }
+.actions a { --bg:linear-gradient(90deg,var(--glow),var(--accent)); position:relative; display:inline-flex; align-items:center; gap:.55rem; font-size:.85rem; letter-spacing:.65px; font-weight:600; text-decoration:none; text-transform:uppercase; padding:.95rem 1.55rem 1rem; border-radius:16px; color:#fff; background:var(--bg); box-shadow:0 6px 22px -6px rgba(255,0,102,.55); isolation:isolate; overflow:hidden; }
+.actions a:before { content:""; position:absolute; inset:0; background:linear-gradient(125deg,rgba(255,255,255,.35),rgba(255,255,255,0) 60%); mix-blend-mode:overlay; opacity:.45; }
+.actions a:hover { transform:translateY(-3px); box-shadow:0 10px 28px -10px rgba(255,0,120,.65); }
+.actions a.secondary { --bg:#161d27; border:1px solid #2a313d; box-shadow:0 6px 18px -8px rgba(0,0,0,.65); }
+.actions a.secondary:hover { background:#1e2632; }
+.spacer { height:1px; margin:1.5rem 0 1.7rem; background:linear-gradient(90deg,transparent,#2b323d,transparent); }
+.console { background:#0d1118; border:1px solid #1e2531; border-radius:16px; padding:1rem 1.25rem 1.2rem; font-family:monospace; font-size:.78rem; line-height:1.55; color:#94a0ac; position:relative; overflow:hidden; }
+.console:before { content:"system-log"; position:absolute; top:6px; right:10px; font-size:.55rem; letter-spacing:1px; text-transform:uppercase; color:#485260; }
+.console-line { opacity:0; transform:translateY(6px); animation:log .6s forwards; }
+@keyframes log { to { opacity:1; transform:translateY(0); } }
+.tip { font-size:.7rem; letter-spacing:.5px; margin-top:.7rem; opacity:.8; }
+#wormhole { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:1; opacity:.35; filter:drop-shadow(0 0 4px rgba(255,0,120,.18)) drop-shadow(0 0 14px rgba(80,60,255,.12)); }
+.footer404 { text-align:center; font-size:.7rem; letter-spacing:.5px; padding:1.1rem .5rem 1.5rem; color:#6d7480; }
+.comet { position:absolute; top:0; left:0; width:4px; height:4px; border-radius:50%; background:radial-gradient(circle,#fff,#fff 40%,transparent 70%); filter:drop-shadow(0 0 6px #fff); animation:comet 8s linear forwards; }
+@keyframes comet { 0% { transform:translate(-10%, -10%) scale(.8); opacity:0; } 8% { opacity:1;} 90% { opacity:1;} 100% { transform:translate(110vw,110vh) scale(.2); opacity:0; } }
+@media (max-width:700px){ .h404{font-size:clamp(3.2rem,20vw,6rem);} .card{border-radius:22px;} .actions a{flex:1 1 auto; justify-content:center; font-size:.78rem; padding:.8rem 1.1rem .85rem;} .desc{font-size:.95rem; margin-bottom:1.6rem;} }
+@media (min-width:1400px){ .console{font-size:.85rem;} .tip{font-size:.75rem;} .actions a{font-size:.9rem;} }
+/* +5px size bump overrides */
+.h404 { font-size: clamp(4.3125rem, calc(11vw + 5px), 14.3125rem); }
+.subtitle { font-size: clamp(1.6125rem, calc(2.2vw + 5px), 2.7125rem); }
+.desc { font-size: 1.3325rem; }
+.actions a { font-size: 1.1625rem; }
+.console { font-size: 1.0925rem; }
+.tip { font-size: 1.0125rem; }
+@media (max-width:700px){
+  .h404 { font-size: clamp(3.5125rem, calc(20vw + 5px), 6.3125rem); }
+  .actions a { font-size: 1.0925rem; }
+  .desc { font-size: 1.15rem; }
+  .console { font-size: 1rem; }
+  .tip { font-size: .9rem; }
+}
+/* Force heading/subtitle above effects & ensure visible */
+.card, .card * { position:relative; }
+.h404, .subtitle { z-index:30 !important; background:none !important; -webkit-background-clip:initial !important; background-clip:initial !important; -webkit-text-fill-color:#fff !important; color:#fff !important; text-shadow:0 4px 18px rgba(0,0,0,.65),0 0 8px rgba(255,255,255,.25); }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="noise" aria-hidden="true"></div>
+<main>
+  <div class="card">
+    <h1 class="h404" aria-label="404 Lost"><span>4</span><span>0</span><span>4</span></h1>
+    <div class="subtitle">You drifted into uncharted Nebula space.</div>
+    <p class="desc">The page you were hunting has either rage quit, been abducted by aliens, or never spawned in the first place. While our hamsters recompile the universe, you might want to head back.</p>
+    <div class="actions">
+      <a href="index.php">Return Home</a>
+      <a href="javascript:history.back()" class="secondary">Go Back</a>
+      <a href="php/signup-login.php?tab=signup" class="secondary">Join Us</a>
+    </div>
+    <div class="spacer"></div>
+    <div class="console" id="console" aria-live="polite"></div>
+    <div class="tip" id="tip"></div>
+    <canvas id="wormhole" aria-hidden="true"></canvas>
+  </div>
+</main>
+<footer class="footer404">&copy; <span id="year"></span> Nebula Esports — Still not found, but at least it looked cool.</footer>
+<script>
+// Year
+document.getElementById('year').textContent = new Date().getFullYear();
+// Gradient text fallback
+(function(){ const test = document.querySelector('.h404'); if(!test) return; const cs = getComputedStyle(test); if(cs.webkitTextFillColor === 'rgba(0, 0, 0, 0)' && cs.color === 'rgb(255, 255, 255)'){ /* ok */ } if(cs.color === 'rgba(0, 0, 0, 0)'){ test.style.background='none'; test.style.webkitBackgroundClip='initial'; test.style.color='#ffffff'; document.querySelector('.subtitle').style.cssText+='background:none;-webkit-background-clip:initial;color:#e3e8ef'; }})();
+// Particle background
+const bg = document.getElementById('bg'); const bctx = bg.getContext('2d'); function resize(){ bg.width=window.innerWidth; bg.height=window.innerHeight; } resize(); window.addEventListener('resize',resize);
+const particles = Array.from({length:160},()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,r:Math.random()*2+0.4,vx:(Math.random()-.5)*0.25,vy:(Math.random()-.5)*0.25,h:Math.random()*360}));
+(function draw(){ bctx.clearRect(0,0,bg.width,bg.height); for(const p of particles){ p.x+=p.vx; p.y+=p.vy; if(p.x<0) p.x+=bg.width; if(p.x>bg.width) p.x-=bg.width; if(p.y<0) p.y+=bg.height; if(p.y>bg.height) p.y-=bg.height; bctx.beginPath(); bctx.fillStyle=`hsla(${p.h},80%,60%,0.55)`; bctx.arc(p.x,p.y,p.r,0,Math.PI*2); bctx.fill(); } requestAnimationFrame(draw); })();
+// Console lines
+const lines=[ 'Booting Nebula navigation AI... OK', 'Scanning sectors... 0 results (space is big)', 'Attempting quantum backtrace... failed gracefully', 'Recalibrating hamster wheel... turbo mode engaged', 'Deploying sarcasm module... active', 'Asking nicely for the page to appear... denied', 'Rendering extra dramatic effects... 73% complete', 'Spawning backup plan... (redirect buttons ready)' ];
+const consoleEl=document.getElementById('console'); lines.forEach((t,i)=>{ const d=document.createElement('div'); d.className='console-line'; d.style.animationDelay=(i*550)+'ms'; d.textContent='> '+t; consoleEl.appendChild(d); });
+// Tips
+const tips=[ 'Tip: If lost, spam F5. It won\'t help, but it feels powerful.', 'Pro Gamer Move: Blame lag for this 404.', 'Did you try turning the universe off and on again?', '404 Fact: This page dropped better loot than most boss fights.', 'Navigation Tip: The map is lying. Trust your heart. Or the HOME button.', 'Achievement Unlocked: Found the hidden Not Found.', 'Secret Code: UP UP DOWN DOWN LEFT RIGHT 404 HOME' ];
+const tipEl=document.getElementById('tip'); function cycle(){ tipEl.textContent=tips[Math.floor(Math.random()*tips.length)]; } cycle(); setInterval(cycle,6000);
+// Falling stars layer (replaces wormhole)
+const ring=document.getElementById('wormhole'); const rctx=ring.getContext('2d');
+function sizeR(){ ring.width=ring.clientWidth; ring.height=ring.clientHeight; }
+sizeR(); window.addEventListener('resize',sizeR);
+const STAR_COUNT = 90;
+const stars = Array.from({length:STAR_COUNT},()=>spawnStar());
+function spawnStar(){
+  const speed = 0.6 + Math.random()*1.8;
+  return {
+    x: Math.random()*ring.width,
+    y: -20 - Math.random()*ring.height,
+    len: 40 + Math.random()*140,
+    w: 1 + Math.random()*1.5,
+    hue: Math.random()*360,
+    speed,
+    vx: (-0.3 + Math.random()*0.6) * speed*0.4,
+    glow: 0.4 + Math.random()*0.6
+  };
+}
+function drawStars(){
+  rctx.clearRect(0,0,ring.width,ring.height);
+  for(const s of stars){
+    // trail
+    const grad = rctx.createLinearGradient(s.x, s.y, s.x - s.vx*20, s.y - s.len);
+    grad.addColorStop(0, `hsla(${s.hue},85%,70%,${0.9*s.glow})`);
+    grad.addColorStop(1, `hsla(${s.hue},85%,55%,0)`);
+    rctx.strokeStyle = grad;
+    rctx.lineWidth = s.w;
+    rctx.lineCap = 'round';
+    rctx.beginPath();
+    rctx.moveTo(s.x, s.y);
+    rctx.lineTo(s.x - s.vx*20, s.y - s.len);
+    rctx.stroke();
+    // update
+    s.y += s.speed * 4;
+    s.x += s.vx;
+    if(s.y - s.len > ring.height + 40){
+      const fresh = spawnStar();
+      s.x = fresh.x; s.y = fresh.y; s.len = fresh.len; s.w = fresh.w; s.hue = fresh.hue; s.speed = fresh.speed; s.vx = fresh.vx; s.glow = fresh.glow;
+    }
+  }
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+// Comets
+function comet(){ const c=document.createElement('div'); c.className='comet'; c.style.top=Math.random()*window.innerHeight*0.4+'px'; c.style.left='-50px'; c.style.animationDuration=(6+Math.random()*4)+'s'; document.body.appendChild(c); setTimeout(()=>c.remove(),9000);} setInterval(comet,4700);
+// Konami easter egg
+const seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']; let idx=0; window.addEventListener('keydown',e=>{ if(e.key===seq[idx]){idx++; if(idx===seq.length){ const egg=document.createElement('div'); egg.className='console-line'; egg.textContent='> Cheat enabled: Summoning missing page... still nope.'; consoleEl.appendChild(egg); egg.style.animationDelay='0ms'; idx=0; } } else { idx=0; }});
+</script>
+</body>
+</html>

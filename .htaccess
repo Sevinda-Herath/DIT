@@ -1,0 +1,6 @@
+ErrorDocument 404 /404.html
+# Ensure existing files are served normally
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# (Optional) Add rewrites here if you later build pretty URLs.
+</IfModule>
