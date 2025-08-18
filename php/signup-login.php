@@ -30,7 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['remember'])) {
           create_remember_token((int)$row['id']);
         }
-                redirect('../php/user.php');
+                // Fetch role for redirect
+                $roleStmt = $pdo->prepare('SELECT role FROM users WHERE id = ?');
+                $roleStmt->execute([$_SESSION['user_id']]);
+                $role = $roleStmt->fetchColumn() ?: 'user';
+                if ($role === 'head_admin') {
+                  redirect('../php/dashboard-head-admin.php');
+                } elseif ($role === 'admin') {
+                  redirect('../php/dashboard-admin.php');
+                } elseif ($role === 'organizer') {
+                  redirect('../php/dashboard-organizer.php');
+                } else {
+                  redirect('../php/user.php');
+                }
             }
         }
     } elseif (isset($_POST['action']) && $_POST['action'] === 'signup_step1') {

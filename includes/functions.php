@@ -75,10 +75,45 @@ function clear_remember_token(?int $userId = null): void {
 // Fetch minimal current user info
 function current_user(PDO $pdo): ?array {
 	if (!isset($_SESSION['user_id'])) return null;
-	$stmt = $pdo->prepare('SELECT id, username, email FROM users WHERE id = ?');
+	$stmt = $pdo->prepare('SELECT id, username, email, role FROM users WHERE id = ?');
 	$stmt->execute([$_SESSION['user_id']]);
 	$row = $stmt->fetch();
 	return $row ?: null;
+}
+
+// Require a minimum role; order: user < organizer < admin < head_admin
+function require_role(string $role): array {
+	$hierarchy = [ 'user' => 0, 'organizer' => 1, 'admin' => 2, 'head_admin' => 3 ];
+	$pdo = db();
+	$uid = require_login();
+	$user = current_user($pdo);
+	if (!$user) redirect('/php/signup-login.php');
+	$have = $hierarchy[$user['role'] ?? 'user'] ?? 0;
+	$need = $hierarchy[$role] ?? PHP_INT_MAX;
+	if ($have < $need) {
+		http_response_code(403);
+		// Styled minimal page (avoid recursive includes)
+		echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>403 Forbidden</title>'
+			.'<link rel="stylesheet" href="/assets/css/style.css"></head><body style="padding:120px 20px;font-family:var(--fontFamily-oxanium,system-ui,sans-serif);">'
+			.'<div style="max-width:720px;margin:0 auto;background:var(--bg-oxford-blue-alpha-90,#161b2b);padding:40px 34px;border:2px solid var(--border-purple-alpha-30,#5a2d7a);border-radius:12px;box-shadow:0 10px 40px -10px rgba(0,0,0,.6);">'
+			.'<h1 class="h2" style="margin:0 0 10px;">Access <span class="span">Denied</span></h1>'
+			.'<p style="margin:0 0 18px;font-size:1.5rem;line-height:1.5;color:var(--text-gainsboro);">Your account role (<strong>'.htmlspecialchars($user['role']).'</strong>) does not have permission to view this page. Required level: <strong>'.htmlspecialchars($role).'</strong>.</p>'
+			.'<div style="display:flex;flex-wrap:wrap;gap:12px;">'
+			.'<a class="btn" href="/php/user.php" data-btn>My Profile</a>'
+			.( ($user['role'] === 'admin') ? '<a class="btn" href="/php/dashboard-admin.php" data-btn>Admin Dashboard</a>' : '' )
+			.( ($user['role'] === 'organizer') ? '<a class="btn" href="/php/dashboard-organizer.php" data-btn>Organizer Dashboard</a>' : '' )
+			.'</div>'
+			.'</div></body></html>';
+		exit;
+	}
+	return $user; // include id, username, email, role
+}
+
+function has_role(array $user, string $role): bool {
+	$hierarchy = [ 'user' => 0, 'organizer' => 1, 'admin' => 2, 'head_admin' => 3 ];
+	$have = $hierarchy[$user['role'] ?? 'user'] ?? 0;
+	$need = $hierarchy[$role] ?? 99;
+	return $have >= $need;
 }
 
 // Flash messages

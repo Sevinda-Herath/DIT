@@ -20,6 +20,7 @@ function migrate(PDO $pdo): void {
         username VARCHAR(64) NOT NULL UNIQUE,
         email VARCHAR(191) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
+    /* Role column added separately below (ALTER TABLE) to allow existing installs to upgrade safely */
         created_at DATETIME NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
@@ -71,4 +72,35 @@ function migrate(PDO $pdo): void {
         CONSTRAINT fk_recovery_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
         INDEX idx_user_used (user_id, used_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+    // Add role column if missing (MySQL 8+: IF NOT EXISTS supported)
+    try {
+        $pdo->exec("ALTER TABLE users ADD COLUMN IF NOT EXISTS role ENUM('user','head_admin','admin','organizer') NOT NULL DEFAULT 'user' AFTER password_hash");
+    } catch (Throwable $e) {
+        // Fallback for older MySQL versions: check INFORMATION_SCHEMA then add
+        try {
+            $colCheck = $pdo->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users' AND COLUMN_NAME='role'");
+            $colCheck->execute([DB_NAME]);
+            if (!$colCheck->fetchColumn()) {
+                $pdo->exec("ALTER TABLE users ADD COLUMN role ENUM('user','head_admin','admin','organizer') NOT NULL DEFAULT 'user' AFTER password_hash");
+            }
+        } catch (Throwable $e2) { /* ignore */ }
+    }
+
+    // Ensure at least one head admin exists; configurable via env vars
+    try {
+        $exists = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role='head_admin'")->fetchColumn();
+        if ($exists === 0) {
+            $seedEmail = getenv('HEAD_ADMIN_EMAIL') ?: 'headadmin@example.com';
+            $seedUser  = getenv('HEAD_ADMIN_USERNAME') ?: 'headadmin';
+            $seedPass  = getenv('HEAD_ADMIN_PASSWORD') ?: 'ChangeMe123!';
+            // Avoid collision on username/email
+            $stmt = $pdo->prepare('SELECT 1 FROM users WHERE email = ? OR username = ? LIMIT 1');
+            $stmt->execute([$seedEmail, $seedUser]);
+            if (!$stmt->fetch()) {
+                $ins = $pdo->prepare('INSERT INTO users (username,email,password_hash,created_at,role) VALUES (?,?,?,?,?)');
+                $ins->execute([$seedUser, $seedEmail, password_hash($seedPass, PASSWORD_DEFAULT), date('Y-m-d H:i:s'), 'head_admin']);
+            }
+        }
+    } catch (Throwable $e) { /* silent seed failure */ }
 }

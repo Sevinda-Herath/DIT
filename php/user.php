@@ -123,6 +123,14 @@ $members = $membersStmt->fetchAll();
         </nav>
 
         <?php if (isset($_SESSION['user_id'])): ?>
+          <?php $cu = current_user($pdo); $roleLink = null; if($cu){
+            if($cu['role']==='head_admin') $roleLink = 'dashboard-head-admin.php';
+            elseif($cu['role']==='admin') $roleLink = 'dashboard-admin.php';
+            elseif($cu['role']==='organizer') $roleLink = 'dashboard-organizer.php';
+          } ?>
+          <?php if($roleLink): ?>
+            <a href="../php/<?= h($roleLink) ?>" class="btn" style="margin-right:10px;" data-btn><?= strtoupper(str_replace('_',' ',$cu['role'])) ?></a>
+          <?php endif; ?>
           <form action="../php/logout.php" method="post" style="display:inline;">
             <?= csrf_field(); ?>
             <button type="submit" class="btn" data-btn>LOGOUT</button>
