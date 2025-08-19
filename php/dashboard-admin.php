@@ -11,6 +11,7 @@ $pdoUsers = $pdo->query("SELECT u.id,u.username,u.email,u.role,p.full_name,p.nic
 <meta charset="UTF-8">
 <title>Admin Dashboard</title>
 <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap" rel="stylesheet">
 <link rel="shortcut icon" href="../assets/images/nebula-esports.png" type="image/png">
 <style>
 .dashboard {margin-top:140px;display:flex;flex-direction:column;gap:34px;}
@@ -50,13 +51,37 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
 <header class="header active" data-header>
   <div class="container">
     <a href="#" class="logo"><img src="../assets/images/nebula-esports.png" style="width:80px;" alt="logo"></a>
-    <nav class="navbar" data-navbar>
-      <ul class="navbar-list">
-        <li class="navbar-item"><a href="../index.php#home" class="navbar-link">home</a></li>
-        <li class="navbar-item"><a href="../index.php#tournament" class="navbar-link">tournament</a></li>
-      </ul>
-    </nav>
+        <nav class="navbar" data-navbar>
+          <ul class="navbar-list">
+
+            <li class="navbar-item">
+              <a href="../index.php#home" class="navbar-link" data-nav-link>home</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="../index.php#tournament" class="navbar-link" data-nav-link>tournament</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="../index.php#news" class="navbar-link" data-nav-link>news</a>
+            </li>
+
+            <li class="navbar-item">
+              <a href="./contact.php" class="navbar-link" data-nav-link>contact</a>
+            </li>
+            <li class="navbar-item">
+              <a href="./rules.php" class="navbar-link" data-nav-link>Rules & Guidelines</a>
+            </li>
+
+          </ul>
+        </nav>
+    <a href="./user.php"><button class="btn">USER</button></a>
     <form action="../php/logout.php" method="post" style="display:inline;"><?= csrf_field(); ?><button class="btn">LOGOUT</button></form>
+          <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
+          <span class="line line-1"></span>
+          <span class="line line-2"></span>
+          <span class="line line-3"></span>
+        </button>
   </div>
 </header>
 <main class="dashboard container">
@@ -87,7 +112,6 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
   </div>
   </div>
 </main>
-<footer class="footer"><div class="footer-bottom"><div class="container"><p class="copyright">&copy; 2025 Nebula</p></div></div></footer>
 <script src="../assets/js/script.js"></script>
 <script src="../assets/js/bg.js"></script>
 </body>
