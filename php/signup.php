@@ -186,22 +186,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Details Panel -->
             <div id="panel-details" class="auth-panel active" role="tabpanel">
               <label for="your-name">Your Name</label>
-              <input id="your-name" class="input-field" type="text" name="full_name" required autocomplete="off">
+              <input id="your-name" class="input-field" type="text" name="full_name" required placeholder="" autocomplete="off">
 
               <label for="your-dob">Date of Birth</label>
-              <input id="your-dob" class="input-field" type="date" name="dob" required>
+              <input id="your-dob" class="input-field" type="date" name="dob" placeholder="" autocomplete="off" required>
 
               <label for="your-location">Location</label>
-              <input id="your-location" class="input-field" type="text" name="location" required>
+              <input id="your-location" class="input-field" type="text" name="location" placeholder="" autocomplete="off" required>
 
-              <label for="your-university">University/College</label>
-              <input id="your-university" class="input-field" type="text" name="university" required>
+              <label for="your-university">University / School</label>
+              <input id="your-university" class="input-field" type="text" name="university" placeholder="" autocomplete="off" required>
 
-              <label for="your-nic">NIC</label>
-              <input id="your-nic" class="input-field" type="text" name="nic" required>
+              <label for="your-nic">NIC / School Index Number</label>
+              <input id="your-nic" class="input-field" type="text" name="nic" placeholder="" autocomplete="off" required>
 
               <label for="your-mobile">Mobile Number</label>
-              <input id="your-mobile" class="input-field" type="tel" name="mobile" required autocomplete="off">
+              <input id="your-mobile" class="input-field" type="tel" name="mobile" required placeholder="" autocomplete="off">
 
               <div class="auth-row" style="margin-top:20px;">
                 <button type="button" class="btn" data-next-tab="game">Next</button>
@@ -211,13 +211,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Game Panel -->
             <div id="panel-game" class="auth-panel" role="tabpanel" hidden>
               <label for="team-name">Team Name</label>
-              <input id="team-name" class="input-field" type="text" name="team_name" required>
+              <input id="team-name" class="input-field" type="text" name="team_name" placeholder="" autocomplete="off" required>
 
               <label for="team-logo">Team Logo</label>
               <input id="team-logo" class="input-field" type="file" name="team_logo" accept="image/*">
 
               <label for="team-captain">Team Captain</label>
-              <input id="team-captain" class="input-field" type="text" name="team_captain" required>
+              <input id="team-captain" class="input-field" type="text" name="team_captain" placeholder="" autocomplete="off" required>
 
               <div id="game-titles" class="game-select-group" role="group" aria-labelledby="game-titles-label">
                 <label id="game-titles-label" style="margin-bottom:8px;">Choose The Game(s)</label>
