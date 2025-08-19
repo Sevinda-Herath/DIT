@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (!$errors) {
             $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
-      $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
             $stmt->execute([$email]);
             $row = $stmt->fetch();
             if (!$row || !password_verify($password, $row['password_hash'])) {
@@ -244,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <div class="auth-row">
                 <label class="checkbox">
-                  <input type="checkbox" name="remember" checked> <span>Remember me</span>
+                  <input type="checkbox" name="remember" checked value="1"> <span>Remember me</span>
                 </label>
                 <a href="./forgot-password.php" class="link-sm">Forgot password?</a>
               </div>

@@ -1,4 +1,7 @@
-<?php require_once __DIR__ . '/includes/bootstrap.php'; ?>
+<?php require_once __DIR__ . '/includes/bootstrap.php';
+// Try auto-login via remember cookie so nav reflects authenticated state immediately
+if (!isset($_SESSION['user_id'])) { attempt_auto_login(); }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,9 +81,9 @@
       <!-- Nav Buttons -->
 
       <?php if(isset($_SESSION['user_id'])): ?>
-        <a href="./php/user.php" class="btn" data-btn>MY PROFILE</a>
+        <a href="/php/user.php" class="btn" data-btn>MY PROFILE</a>
       <?php else: ?>
-        <a href="./php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
+        <a href="/php/signup-login.php" class="btn" data-btn>LOGIN / SIGN UP</a>
       <?php endif; ?>
 
       <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>

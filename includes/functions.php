@@ -12,31 +12,33 @@ function redirect(string $path): never {
 	exit;
 }
 
-// Require login and return current user id
+// Attempt remember cookie auto-login without redirect. Returns true if session set.
+function attempt_auto_login(): bool {
+	if (isset($_SESSION['user_id'])) return true;
+	if (!isset($_COOKIE['remember'])) return false;
+	[$sel, $ver] = array_pad(explode(':', $_COOKIE['remember'], 2), 2, '');
+	if (!$sel || !$ver) return false;
+	$pdo = db();
+	$stmt = $pdo->prepare('SELECT user_id, token_hash, expires_at FROM remember_tokens WHERE selector = ? LIMIT 1');
+	$stmt->execute([$sel]);
+	$row = $stmt->fetch();
+	if (!$row) return false;
+	if (strtotime($row['expires_at']) > time() && hash_equals($row['token_hash'], hash('sha256', $ver))) {
+		$_SESSION['user_id'] = (int)$row['user_id'];
+		return true;
+	}
+	// cleanup invalid
+	$pdo->prepare('DELETE FROM remember_tokens WHERE selector = ?')->execute([$sel]);
+	setcookie('remember', '', time() - 3600, '/', '', false, true);
+	return false;
+}
+
+// Require login (redirect if not); uses attempt_auto_login first
 function require_login(): int {
 	if (!isset($_SESSION['user_id'])) {
-		// Attempt auto-login via remember cookie
-		if (isset($_COOKIE['remember'])) {
-			[$sel, $ver] = array_pad(explode(':', $_COOKIE['remember'], 2), 2, '');
-			if ($sel && $ver) {
-				$pdo = db();
-				$stmt = $pdo->prepare('SELECT user_id, token_hash, expires_at FROM remember_tokens WHERE selector = ? LIMIT 1');
-				$stmt->execute([$sel]);
-				$row = $stmt->fetch();
-				if ($row) {
-					if (strtotime($row['expires_at']) > time() && hash_equals($row['token_hash'], hash('sha256', $ver))) {
-						$_SESSION['user_id'] = (int)$row['user_id'];
-						return (int)$row['user_id'];
-					} else {
-						// Expired or mismatch: cleanup
-						$pdo->prepare('DELETE FROM remember_tokens WHERE selector = ?')->execute([$sel]);
-						setcookie('remember', '', time() - 3600, '/', '', false, true);
-					}
-				}
-			}
+		if (!attempt_auto_login()) {
 			redirect('/php/signup-login.php');
 		}
-		redirect('/php/signup-login.php');
 	}
 	return (int)$_SESSION['user_id'];
 }
