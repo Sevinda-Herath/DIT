@@ -14,11 +14,16 @@ if (isset($_GET['tab']) && $_GET['tab'] === 'signup') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'login') {
         $activeTab = 'login';
-        $email = trim($_POST['email'] ?? '');
+    $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
-        if (!$email || !$password) {
+    if (!$email || !$password) {
             $errors[] = 'Email and password are required.';
-        } else {
+    } else {
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Invalid email format.';
+      }
+    }
+    if (!$errors) {
             $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
       $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = ?');
             $stmt->execute([$email]);
@@ -52,12 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = $_POST['password'] ?? '';
         $confirm = $_POST['confirm'] ?? '';
         $terms = isset($_POST['terms']);
-        if (!$username || !$email || !$password || !$confirm) {
+    if (!$username || !$email || !$password || !$confirm) {
             $errors[] = 'All fields are required.';
         } elseif ($password !== $confirm) {
             $errors[] = 'Passwords do not match.';
         } elseif (!$terms) {
             $errors[] = 'You must agree to the rules & guidelines.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $errors[] = 'Invalid email format.';
+    } elseif (strlen($password) < 8 ||
+      !preg_match('/[a-z]/', $password) ||
+      !preg_match('/[A-Z]/', $password) ||
+      !preg_match('/[0-9]/', $password) ||
+      !preg_match('/[^A-Za-z0-9]/', $password)) {
+    $errors[] = 'Password must be 8+ chars and include upper, lower, number & symbol.';
         } else {
             // Check uniqueness
             $stmt = $pdo->prepare('SELECT 1 FROM users WHERE username = ? OR email = ?');
@@ -313,7 +326,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="footer-list">
           <p class="title footer-list-title has-after">Newsletter Signup</p>
           <form action="../index.html" method="get" class="footer-form">
-            <input type="email" name="email_address" required placeholder="Your Email" autocomplete="off" class="input-field">
+            <input type="email" name="email_address" required placeholder="Your Email" autocomplete="email" class="input-field">
             <button type="submit" class="btn" data-btn>Subscribe Now</button>
           </form>
         </div>
@@ -389,12 +402,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else if (rule === 'symbol') ok = tests.symbol;
           li.classList.toggle('ok', ok);
         });
-        // No longer enforce minimum strength; just display feedback
+        // Enforce mandatory rules: 8+ length, upper, lower, number, symbol
+        const meets = tests.length8 && tests.lower && tests.upper && tests.number && tests.symbol;
         if(submitBtn){
-          if(submitBtn.disabled){
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('pw-disabled');
-          }
+          submitBtn.disabled = !meets || (confirm && confirm.value !== val);
+          submitBtn.classList.toggle('pw-disabled', submitBtn.disabled);
         }
         if(confirm){
           if (val && confirm.value && confirm.value !== val) {
