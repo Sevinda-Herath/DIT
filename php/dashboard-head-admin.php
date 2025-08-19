@@ -234,7 +234,6 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
   </div>
   </div>
 </main>
-<footer class="footer"><div class="footer-bottom"><div class="container"><p class="copyright">&copy; 2025 Nebula</p></div></div></footer>
 <script src="../assets/js/script.js"></script>
 <script src="../assets/js/bg.js"></script>
 </body>

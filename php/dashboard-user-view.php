@@ -32,6 +32,7 @@ $members = $memStmt->fetchAll();
 ?>
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>View User #<?= (int)$user['id'] ?></title>
 <link rel="stylesheet" href="../assets/css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap" rel="stylesheet">
 <link rel="shortcut icon" href="../assets/images/nebula-esports.png" type="image/png">
 <style>
 .page{margin-top:140px;display:flex;flex-direction:column;gap:34px;}
@@ -53,8 +54,7 @@ h1.section-title:after{content:"";position:absolute;left:0;bottom:0;width:100%;h
 <?php $back = ($actor['role']==='organizer') ? 'dashboard-organizer.php' : (($actor['role']==='admin') ? 'dashboard-admin.php' : 'dashboard-head-admin.php'); ?>
 <header class="header active" data-header><div class="container">
   <a href="<?= h($back) ?>" class="logo"><img src="../assets/images/nebula-esports.png" style="width:80px;" alt="logo"></a>
-  <nav class="navbar" data-navbar><ul class="navbar-list"><li class="navbar-item"><a href="<?= h($back) ?>" class="navbar-link">Back</a></li></ul></nav>
-  <form action="../php/logout.php" method="post" style="display:inline;"><?= csrf_field(); ?><button class="btn">LOGOUT</button></form>
+  <a href="<?= h($back) ?>" class="navbar-link"> <button class ="btn">Back</button> </a>
 </div></header>
 <main class="page container">
   <h1 class="h2 section-title">View <span class="span">User</span> #<?= (int)$user['id'] ?></h1>
@@ -113,7 +113,6 @@ h1.section-title:after{content:"";position:absolute;left:0;bottom:0;width:100%;h
     <?php endif; ?>
   </div>
 </main>
-<footer class="footer"><div class="footer-bottom"><div class="container"><p class="copyright">&copy; 2025 Nebula</p></div></div></footer>
 <script src="../assets/js/script.js"></script>
 <script src="../assets/js/bg.js"></script>
 </body></html>
