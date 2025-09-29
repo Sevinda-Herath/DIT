@@ -80,7 +80,7 @@ $messages_count = 0;
 $contact_messages = [];
 try {
   $messages_count = (int)$pdo->query('SELECT COUNT(*) FROM contact_messages')->fetchColumn();
-  $contact_messages = $pdo->query("SELECT id, full_name, email, subject, message, status, created_at FROM contact_messages ORDER BY id DESC LIMIT 50")->fetchAll();
+  $contact_messages = $pdo->query("SELECT id, full_name, email, subject, message, status, ip, user_agent, created_at FROM contact_messages ORDER BY id DESC LIMIT 50")->fetchAll();
 } catch (Throwable $e) {
   // table might not exist yet; ignore
 }
@@ -209,6 +209,10 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
   <div class="status-bar" style="padding:10px 18px;border-radius:14px;font-size:1.25rem;font-weight:500;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
     Logged in as <strong><?= h($user['username']) ?></strong> (role: <strong><?= h($user['role']) ?></strong>) |  Users found: <?= count($users) ?> | Newsletter subscribers: <?= (int)$newsletter_count ?>  | Contact messages: <?= (int)$messages_count ?>
   </div>
+      <div class="msgs">
+      <?php foreach($messages as $m): ?><div class="ok"><?= h($m) ?></div><?php endforeach; ?>
+      <?php foreach($errors as $e): ?><div class="err"><?= h($e) ?></div><?php endforeach; ?>
+    </div>
   <h1 class="h2 section-title">Head <span class="span">Admin</span> Panel</h1>
   <div class="panel revealed" data-reveal="bottom">
     <h2 class="h3 title">Create User / Admin / Organizer</h2>
@@ -339,13 +343,16 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
             <tr>
               <td><?= (int)$cm['id'] ?></td>
               <td>
-                <a href="#" class="card-title" style="text-decoration:underline;color:var(--text-purple);"
+           <a href="#" class="card-title" style="text-decoration:underline;color:var(--text-purple);"
                    data-open-message
                    data-id="<?= (int)$cm['id'] ?>"
                    data-name="<?= h($cm['full_name']) ?>"
                    data-email="<?= h($cm['email']) ?>"
                    data-subject="<?= h($cm['subject']) ?>"
+             data-status="<?= h($cm['status']) ?>"
                    data-created="<?= h($cm['created_at']) ?>"
+             data-ip="<?= h($cm['ip'] ?? '') ?>"
+             data-ua="<?= h($cm['user_agent'] ?? '') ?>"
                    data-message="<?= h($cm['message']) ?>">
                    <?= h($cm['full_name']) ?>
                 </a>
@@ -381,15 +388,21 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
   <div id="messageModal" class="panel" style="display:none;position:fixed;inset:0;margin:auto;max-width:820px;max-height:80vh;z-index:9999;overflow:auto;">
     <h2 class="h3 title">Message Details</h2>
     <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div class="field"><label>ID</label><div class="value" id="mm_id"></div></div>
       <div class="field"><label>Name</label><div class="value" id="mm_name"></div></div>
       <div class="field"><label>Email</label><div class="value" id="mm_email"></div></div>
       <div class="field"><label>Subject</label><div class="value" id="mm_subject"></div></div>
+      <div class="field"><label>Status</label><div class="value" id="mm_status"></div></div>
       <div class="field"><label>Created</label><div class="value" id="mm_created"></div></div>
     </div>
     <div class="field" style="margin-top:10px;">
       <label>Message</label>
       <div class="value" id="mm_message" style="white-space:pre-wrap;line-height:1.5;">
       </div>
+    </div>
+    <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:10px;">
+      <div class="field"><label>IP Address</label><div class="value" id="mm_ip"></div></div>
+      <div class="field" style="grid-column:1 / -1;"><label>User Agent</label><div class="value" id="mm_ua" style="white-space:normal;word-break:break-word;"></div></div>
     </div>
     <div style="display:flex;gap:10px;margin-top:14px;">
       <button class="btn" id="mm_close">Close</button>
@@ -404,19 +417,27 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
     const modal = document.getElementById('messageModal');
     const backdrop = document.getElementById('messageBackdrop');
     const mm = {
+      id: document.getElementById('mm_id'),
       name: document.getElementById('mm_name'),
       email: document.getElementById('mm_email'),
       subject: document.getElementById('mm_subject'),
+      status: document.getElementById('mm_status'),
       created: document.getElementById('mm_created'),
       message: document.getElementById('mm_message'),
+      ip: document.getElementById('mm_ip'),
+      ua: document.getElementById('mm_ua'),
       closeBtn: document.getElementById('mm_close')
     };
     function openModal(data){
+      mm.id.textContent = data.id || '';
       mm.name.textContent = data.name || '';
       mm.email.textContent = data.email || '';
       mm.subject.textContent = data.subject || '';
+      mm.status.textContent = data.status || '';
       mm.created.textContent = data.created || '';
       mm.message.textContent = data.message || '';
+      mm.ip.textContent = data.ip || '';
+      mm.ua.textContent = data.ua || '';
       modal.style.display = 'block';
       backdrop.style.display = 'block';
     }
@@ -434,6 +455,9 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
           email: a.getAttribute('data-email'),
           subject: a.getAttribute('data-subject'),
           created: a.getAttribute('data-created'),
+          status: a.getAttribute('data-status'),
+          ip: a.getAttribute('data-ip'),
+          ua: a.getAttribute('data-ua'),
           message: a.getAttribute('data-message')
         });
         return;
