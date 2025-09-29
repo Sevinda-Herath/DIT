@@ -23,6 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     fclose($out);
     exit;
   }
+  if ($action === 'update_message_status') {
+    $mid = (int)($_POST['id'] ?? 0);
+    $status = $_POST['status'] ?? 'not_replied';
+    if ($mid && in_array($status, ['not_replied','replied'], true)) {
+      $stmt = $pdo->prepare('UPDATE contact_messages SET status=? WHERE id=?');
+      $stmt->execute([$status, $mid]);
+      $messages[] = 'Message status updated';
+    }
+  }
     if ($action === 'create') {
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -63,6 +72,15 @@ $newsletter = [];
 try {
   $newsletter_count = (int)$pdo->query('SELECT COUNT(*) FROM newsletter_subscriptions')->fetchColumn();
   $newsletter = $pdo->query('SELECT id, email, ip, user_agent, created_at FROM newsletter_subscriptions ORDER BY id DESC LIMIT 50')->fetchAll();
+} catch (Throwable $e) {
+  // table might not exist yet; ignore
+}
+// Contact messages data
+$messages_count = 0;
+$contact_messages = [];
+try {
+  $messages_count = (int)$pdo->query('SELECT COUNT(*) FROM contact_messages')->fetchColumn();
+  $contact_messages = $pdo->query("SELECT id, full_name, email, subject, message, status, created_at FROM contact_messages ORDER BY id DESC LIMIT 50")->fetchAll();
 } catch (Throwable $e) {
   // table might not exist yet; ignore
 }
@@ -189,7 +207,7 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
 </header>
 <main class="dashboard container">
   <div class="status-bar" style="padding:10px 18px;border-radius:14px;font-size:1.25rem;font-weight:500;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-    Logged in as <strong><?= h($user['username']) ?></strong> (role: <strong><?= h($user['role']) ?></strong>) | Users found: <?= count($users) ?>
+    Logged in as <strong><?= h($user['username']) ?></strong> (role: <strong><?= h($user['role']) ?></strong>) |  Users found: <?= count($users) ?> | Newsletter subscribers: <?= (int)$newsletter_count ?>  | Contact messages: <?= (int)$messages_count ?>
   </div>
   <h1 class="h2 section-title">Head <span class="span">Admin</span> Panel</h1>
   <div class="panel revealed" data-reveal="bottom">
@@ -212,9 +230,8 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
   <div class="panel revealed" data-reveal="bottom">
     <h2 class="h3 title">All Accounts</h2>
     <div class="msgs">
-      <?php foreach($messages as $m): ?><div class="ok"><?= h($m) ?></div><?php endforeach; ?>
-      <?php foreach($errors as $e): ?><div class="err"><?= h($e) ?></div><?php endforeach; ?>
-    </div>
+          <div class="ok">Total users: <?= count($users) ?></div>
+    </div>    
   <div class="table-wrap">
   <table class="table">
       <thead><tr><th>ID</th><th>User</th><th>Email</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead>
@@ -297,8 +314,134 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
       </table>
     </div>
   </div>
+
+  <div class="panel revealed" data-reveal="bottom">
+    <h2 class="h3 title">Email Messages</h2>
+    <div class="msgs">
+      <div class="ok">Total messages: <?= (int)$messages_count ?></div>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if ($contact_messages): ?>
+          <?php foreach ($contact_messages as $cm): ?>
+            <tr>
+              <td><?= (int)$cm['id'] ?></td>
+              <td>
+                <a href="#" class="card-title" style="text-decoration:underline;color:var(--text-purple);"
+                   data-open-message
+                   data-id="<?= (int)$cm['id'] ?>"
+                   data-name="<?= h($cm['full_name']) ?>"
+                   data-email="<?= h($cm['email']) ?>"
+                   data-subject="<?= h($cm['subject']) ?>"
+                   data-created="<?= h($cm['created_at']) ?>"
+                   data-message="<?= h($cm['message']) ?>">
+                   <?= h($cm['full_name']) ?>
+                </a>
+              </td>
+              <td><?= h($cm['email']) ?></td>
+              <td><?= h($cm['subject']) ?></td>
+              <td><span class="badge-role"><?= h($cm['status']) ?></span></td>
+              <td><?= h($cm['created_at']) ?></td>
+              <td style="white-space:nowrap;">
+                <form class="inline" method="post" action="" style="margin:0;">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="action" value="update_message_status">
+                  <input type="hidden" name="id" value="<?= (int)$cm['id'] ?>">
+                  <select name="status" class="input-field small">
+                    <?php foreach(['not_replied','replied'] as $st): ?>
+                      <option value="<?= $st ?>" <?= $st===$cm['status']?'selected':'' ?>><?= $st ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  <button class="btn" style="min-width:120px;">Save</button>
+                </form>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="7">No messages yet.</td></tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Message Modal -->
+  <div id="messageModal" class="panel" style="display:none;position:fixed;inset:0;margin:auto;max-width:820px;max-height:80vh;z-index:9999;overflow:auto;">
+    <h2 class="h3 title">Message Details</h2>
+    <div class="grid" style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div class="field"><label>Name</label><div class="value" id="mm_name"></div></div>
+      <div class="field"><label>Email</label><div class="value" id="mm_email"></div></div>
+      <div class="field"><label>Subject</label><div class="value" id="mm_subject"></div></div>
+      <div class="field"><label>Created</label><div class="value" id="mm_created"></div></div>
+    </div>
+    <div class="field" style="margin-top:10px;">
+      <label>Message</label>
+      <div class="value" id="mm_message" style="white-space:pre-wrap;line-height:1.5;">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn" id="mm_close">Close</button>
+    </div>
+  </div>
+  <div id="messageBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);z-index:9998"></div>
 </main>
 <script src="../assets/js/script.js"></script>
 <script src="../assets/js/bg.js"></script>
+<script>
+  (function(){
+    const modal = document.getElementById('messageModal');
+    const backdrop = document.getElementById('messageBackdrop');
+    const mm = {
+      name: document.getElementById('mm_name'),
+      email: document.getElementById('mm_email'),
+      subject: document.getElementById('mm_subject'),
+      created: document.getElementById('mm_created'),
+      message: document.getElementById('mm_message'),
+      closeBtn: document.getElementById('mm_close')
+    };
+    function openModal(data){
+      mm.name.textContent = data.name || '';
+      mm.email.textContent = data.email || '';
+      mm.subject.textContent = data.subject || '';
+      mm.created.textContent = data.created || '';
+      mm.message.textContent = data.message || '';
+      modal.style.display = 'block';
+      backdrop.style.display = 'block';
+    }
+    function closeModal(){
+      modal.style.display = 'none';
+      backdrop.style.display = 'none';
+    }
+    document.addEventListener('click', function(e){
+      const a = e.target.closest('[data-open-message]');
+      if (a){
+        e.preventDefault();
+        openModal({
+          id: a.getAttribute('data-id'),
+          name: a.getAttribute('data-name'),
+          email: a.getAttribute('data-email'),
+          subject: a.getAttribute('data-subject'),
+          created: a.getAttribute('data-created'),
+          message: a.getAttribute('data-message')
+        });
+        return;
+      }
+      if (e.target === backdrop){ closeModal(); }
+    });
+    mm.closeBtn && mm.closeBtn.addEventListener('click', closeModal);
+  })();
+</script>
 </body>
 </html>

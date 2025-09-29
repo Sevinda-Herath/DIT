@@ -88,3 +88,19 @@ CREATE TABLE IF NOT EXISTS `newsletter_subscriptions` (
   UNIQUE KEY `uniq_email` (`email`),
   KEY `idx_created` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Contact messages table
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `full_name` VARCHAR(191) NOT NULL,
+  `email` VARCHAR(191) NOT NULL,
+  `subject` VARCHAR(191) NULL,
+  `message` TEXT NOT NULL,
+  `ip` VARCHAR(45) NULL,
+  `user_agent` VARCHAR(255) NULL,
+  `status` ENUM('not_replied','replied') NOT NULL DEFAULT 'not_replied',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_created` (`created_at`),
+  KEY `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -151,13 +151,19 @@
           </ul>
         </div>
 
-        <form class="contact-form" action="#" method="post" data-reveal="right">
-          <input class="input-field" type="text" name="full_name" placeholder="Your Name"  autocomplete="off"required>
-          <input class="input-field" type="email" name="email" placeholder="Your Email"  autocomplete="off" required>
-          <input class="input-field" type="text" name="subject"  autocomplete="off" placeholder="Subject">
-          <textarea class="input-field" name="message" placeholder="Your Message" rows="6"  autocomplete="off"required></textarea>
-          <button type="submit" class="btn"  autocomplete="off" data-btn>Send Message</button>
+        <form class="contact-form" action="/php/contact-submit.php" method="post" data-reveal="right">
+          <?= csrf_field() ?>
+          <input class="input-field" type="text" name="full_name" placeholder="Your Name" autocomplete="name" required>
+          <input class="input-field" type="email" name="email" placeholder="Your Email" autocomplete="email" required>
+          <input class="input-field" type="text" name="subject" autocomplete="off" placeholder="Subject">
+          <textarea class="input-field" name="message" placeholder="Your Message" rows="6" autocomplete="off" required></textarea>
+          <button type="submit" class="btn" data-btn>Send Message</button>
         </form>
+        <?php if ($msg = get_flash('contact')): ?>
+          <p class="section-text" style="margin-top:10px;">
+            <?= h($msg) ?>
+          </p>
+        <?php endif; ?>
       </div>
     </div>
   </section>

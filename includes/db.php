@@ -72,6 +72,21 @@ function migrate(PDO $pdo): void {
         UNIQUE KEY uniq_selector (selector)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
+    // Contact messages from contact form
+    $pdo->exec('CREATE TABLE IF NOT EXISTS contact_messages (
+        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(191) NOT NULL,
+        email VARCHAR(191) NOT NULL,
+        subject VARCHAR(191) NULL,
+        message TEXT NOT NULL,
+        ip VARCHAR(45) NULL,
+        user_agent VARCHAR(255) NULL,
+        status ENUM(\'not_replied\',\'replied\') NOT NULL DEFAULT \'not_replied\',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_created (created_at),
+        INDEX idx_email (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
     // One-time password recovery codes (10 generated after signup; user can regenerate)
     $pdo->exec('CREATE TABLE IF NOT EXISTS recovery_codes (
         id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -118,4 +133,17 @@ function migrate(PDO $pdo): void {
             }
         }
     } catch (Throwable $e) { /* silent seed failure */ }
+
+    // Add status column to contact_messages if missing
+    try {
+        $pdo->exec("ALTER TABLE contact_messages ADD COLUMN IF NOT EXISTS status ENUM('not_replied','replied') NOT NULL DEFAULT 'not_replied' AFTER user_agent");
+    } catch (Throwable $e) {
+        try {
+            $colCheck = $pdo->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'contact_messages' AND COLUMN_NAME='status'");
+            $colCheck->execute([DB_NAME]);
+            if (!(int)$colCheck->fetchColumn()) {
+                $pdo->exec("ALTER TABLE contact_messages ADD COLUMN status ENUM('not_replied','replied') NOT NULL DEFAULT 'not_replied' AFTER user_agent");
+            }
+        } catch (Throwable $e2) { /* ignore */ }
+    }
 }
