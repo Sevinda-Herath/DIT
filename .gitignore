@@ -1,3 +1,5 @@
+# Ignore local environment file
+.env
 # Ignore local database and uploaded files
 data/*.sqlite
 uploads/**

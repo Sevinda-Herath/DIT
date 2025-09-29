@@ -16,6 +16,28 @@ if (!is_dir(UPLOADS_DIR)) {
     @mkdir(UPLOADS_DIR, 0775, true);
 }
 
+// Load environment variables from .env (simple parser)
+$dotenvPath = BASE_PATH . '/.env';
+if (is_file($dotenvPath) && is_readable($dotenvPath)) {
+    $lines = file($dotenvPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') continue;
+        $eqPos = strpos($line, '=');
+        if ($eqPos === false) continue;
+        $name = trim(substr($line, 0, $eqPos));
+        $value = trim(substr($line, $eqPos + 1));
+        if ($value !== '' && (($value[0] === '"' && substr($value, -1) === '"') || ($value[0] === "'" && substr($value, -1) === "'"))) {
+            $value = substr($value, 1, -1);
+        }
+        if ($name !== '') {
+            putenv($name . '=' . $value);
+            $_ENV[$name] = $value;
+            $_SERVER[$name] = $value;
+        }
+    }
+}
+
 require_once BASE_PATH . '/includes/config.php';
 require_once BASE_PATH . '/includes/db.php';
 require_once BASE_PATH . '/includes/functions.php';

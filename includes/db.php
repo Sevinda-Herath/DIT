@@ -91,9 +91,14 @@ function migrate(PDO $pdo): void {
     try {
         $exists = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role='head_admin'")->fetchColumn();
         if ($exists === 0) {
-            $seedEmail = getenv('HEAD_ADMIN_EMAIL') ?: 'headadmin@example.com';
-            $seedUser  = getenv('HEAD_ADMIN_USERNAME') ?: 'headadmin';
-            $seedPass  = getenv('HEAD_ADMIN_PASSWORD') ?: 'ChangeMe123!';
+            $seedEmail = getenv('HEAD_ADMIN_EMAIL') ?: '';
+            $seedUser  = getenv('HEAD_ADMIN_USERNAME') ?: '';
+            $seedPass  = getenv('HEAD_ADMIN_PASSWORD') ?: '';
+            // Only seed if all three values are provided via environment
+            if ($seedEmail === '' || $seedUser === '' || $seedPass === '') {
+                // Skip seeding to avoid creating accounts with weak default credentials
+                return;
+            }
             // Avoid collision on username/email
             $stmt = $pdo->prepare('SELECT 1 FROM users WHERE email = ? OR username = ? LIMIT 1');
             $stmt->execute([$seedEmail, $seedUser]);
