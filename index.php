@@ -478,7 +478,7 @@ if (!isset($_SESSION['user_id'])) { attempt_auto_login(); }
 
         </div>
 
-        <div class="footer-list">
+  <div class="footer-list" id="newsletter">
 
           <p class="title footer-list-title has-after">Usefull Links</p>
 
@@ -540,12 +540,18 @@ if (!isset($_SESSION['user_id'])) { attempt_auto_login(); }
 
           <p class="title footer-list-title has-after">Newsletter Signup</p>
 
-          <form action="./index.html" method="get" class="footer-form">
-            <input type="email" name="email_address" required placeholder="Your Email" autocomplete="off"
+          <form action="/php/newsletter-subscribe.php" method="post" class="footer-form">
+            <?php echo csrf_field(); ?>
+            <input type="email" name="email_address" required placeholder="Your Email" autocomplete="email"
               class="input-field">
 
             <button type="submit" class="btn" data-btn>Subscribe Now</button>
           </form>
+          <?php if ($msg = get_flash('newsletter')): ?>
+            <p style="margin-top: 10px; color: var(--text-gainsboro); font-size: 1.4rem;">
+              <?php echo h($msg); ?>
+            </p>
+          <?php endif; ?>
 
         </div>
 

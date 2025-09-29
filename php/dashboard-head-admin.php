@@ -10,6 +10,19 @@ verify_csrf();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
+  if ($action === 'export_newsletter') {
+    // Stream CSV export of newsletter subscriptions
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=newsletter_subscriptions.csv');
+    $out = fopen('php://output', 'w');
+    fputcsv($out, ['id','email','ip','user_agent','created_at']);
+    $stmt = $pdo->query('SELECT id, email, ip, user_agent, created_at FROM newsletter_subscriptions ORDER BY id DESC');
+    while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+      fputcsv($out, $row);
+    }
+    fclose($out);
+    exit;
+  }
     if ($action === 'create') {
         $username = trim($_POST['username'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -44,6 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $users = $pdo->query("SELECT id, username, email, role, created_at FROM users ORDER BY id DESC")->fetchAll();
+// Newsletter data (count + latest)
+$newsletter_count = 0;
+$newsletter = [];
+try {
+  $newsletter_count = (int)$pdo->query('SELECT COUNT(*) FROM newsletter_subscriptions')->fetchColumn();
+  $newsletter = $pdo->query('SELECT id, email, ip, user_agent, created_at FROM newsletter_subscriptions ORDER BY id DESC LIMIT 50')->fetchAll();
+} catch (Throwable $e) {
+  // table might not exist yet; ignore
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -232,6 +254,48 @@ h1.section-title:after {content:"";position:absolute;left:0;bottom:0;width:100%;
       </tbody>
   </table>
   </div>
+  </div>
+
+  <div class="panel revealed" data-reveal="bottom">
+    <h2 class="h3 title">Newsletter Subscribers</h2>
+    <div class="msgs">
+      <div class="ok">Total subscribers: <?= (int)$newsletter_count ?></div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;margin:0 0 12px;flex-wrap:wrap;">
+      <form action="" method="post" class="inline" style="margin:0;">
+        <?= csrf_field() ?>
+        <input type="hidden" name="action" value="export_newsletter">
+        <button class="btn" style="min-width:180px;">Download CSV</button>
+      </form>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>IP</th>
+            <th>User Agent</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php if ($newsletter): ?>
+          <?php foreach ($newsletter as $n): ?>
+            <tr>
+              <td><?= (int)$n['id'] ?></td>
+              <td><?= h($n['email']) ?></td>
+              <td><?= h($n['ip']) ?></td>
+              <td><?= h($n['user_agent']) ?></td>
+              <td><?= h($n['created_at']) ?></td>
+            </tr>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <tr><td colspan="5">No subscribers yet.</td></tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>
 <script src="../assets/js/script.js"></script>

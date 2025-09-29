@@ -76,3 +76,15 @@ CREATE TABLE `remember_tokens` (
 --  * Aligns with application code (selector CHAR(12), token_hash column name).
 --  * Drop table before create ensures updated structure during manual migrations.
 --  * Increase selector length or expires window in code & here if future requirements change.
+
+-- Newsletter subscriptions table
+CREATE TABLE IF NOT EXISTS `newsletter_subscriptions` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(191) NOT NULL,
+  `ip` VARCHAR(45) NULL,
+  `user_agent` VARCHAR(255) NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_email` (`email`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
