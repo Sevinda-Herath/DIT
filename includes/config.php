@@ -8,4 +8,4 @@ define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
 define('DB_PORT', getenv('DB_PORT') ?: '3306');
 define('DB_NAME', getenv('DB_NAME') ?: 'nebula');
 define('DB_USER', 'nebula_user');
-define('DB_PASS', 'StrongPasswordHere');
+define('DB_PASS', 'nebula123#');

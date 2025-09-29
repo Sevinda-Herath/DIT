@@ -351,10 +351,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   container.classList.add('pw-strength');
   container.innerHTML = `
         <div class="pw-header">Password Strength: <strong class="pw-label">&nbsp;</strong><span class="pw-count" style="margin-left:auto;font-weight:500;color:#888;font-size:11px;"></span></div>
+        <div class="pw-header">Please make sure to meet at least four criterias from the below list.</div>
         <div class="pw-meter"><span></span></div>
         <ul class="pw-criteria">
           <li data-rule="length8"><span class="bullet"></span>8+ chars</li>
-          <li data-rule="length12"><span class="bullet"></span>12+ chars (better)</li>
           <li data-rule="case"><span class="bullet"></span>Upper & lower case</li>
           <li data-rule="number"><span class="bullet"></span>Number</li>
           <li data-rule="symbol"><span class="bullet"></span>Symbol</li>
@@ -368,7 +368,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       function assess(p){
         const tests = {
           length8: p.length >= 8,
-          length12: p.length >= 12,
           lower: /[a-z]/.test(p),
           upper: /[A-Z]/.test(p),
           number: /[0-9]/.test(p),
@@ -376,26 +375,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         };
         let score = 0;
         if (tests.length8) score++;
-        if (tests.length12) score++;
         if (tests.lower && tests.upper) score++;
         if (tests.number) score++;
         if (tests.symbol) score++;
         return {tests, score};
       }
-      const labels = ['Very Weak','Weak','Fair','Good','Strong','Very Strong'];
+      const labels = ['Very Weak','Weak','Fair','Good','Strong'];
 
       function update(){
         const val = pw.value;
         const {tests, score} = assess(val);
         container.setAttribute('data-score', String(score));
-        meterBar.style.width = ((score/5)*100) + '%';
+        meterBar.style.width = ((score/4)*100) + '%';
         labelEl.textContent = labels[score];
         countEl.textContent = val.length + ' chars';
         criteriaEls.forEach(li => {
           const rule = li.getAttribute('data-rule');
           let ok = false;
             if (rule === 'length8') ok = tests.length8;
-            else if (rule === 'length12') ok = tests.length12;
             else if (rule === 'case') ok = tests.lower && tests.upper;
             else if (rule === 'number') ok = tests.number;
             else if (rule === 'symbol') ok = tests.symbol;
