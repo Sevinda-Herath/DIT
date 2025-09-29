@@ -158,12 +158,14 @@
           <input class="input-field" type="text" name="subject" autocomplete="off" placeholder="Subject">
           <textarea class="input-field" name="message" placeholder="Your Message" rows="6" autocomplete="off" required></textarea>
           <button type="submit" class="btn" data-btn>Send Message</button>
+          <br>
+          <?php if ($msg = get_flash('contact')): ?>
+            <p class="section-text" style="margin-top:10px;">
+              <?= h($msg) ?>
+            </p>
+          <?php endif; ?>
         </form>
-        <?php if ($msg = get_flash('contact')): ?>
-          <p class="section-text" style="margin-top:10px;">
-            <?= h($msg) ?>
-          </p>
-        <?php endif; ?>
+
       </div>
     </div>
   </section>
