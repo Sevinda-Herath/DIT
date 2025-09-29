@@ -351,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   container.classList.add('pw-strength');
   container.innerHTML = `
         <div class="pw-header">Password Strength: <strong class="pw-label">&nbsp;</strong><span class="pw-count" style="margin-left:auto;font-weight:500;color:#888;font-size:11px;"></span></div>
-        <div class="pw-header">Please make sure to meet at least four criterias from the below list.</div>
+  <div class="pw-header">Please make sure to meet all the criteria below.</div>
         <div class="pw-meter"><span></span></div>
         <ul class="pw-criteria">
           <li data-rule="length8"><span class="bullet"></span>8+ chars</li>
@@ -401,8 +401,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Enforce mandatory rules: 8+ length, upper, lower, number, symbol
         const meets = tests.length8 && tests.lower && tests.upper && tests.number && tests.symbol;
         if(submitBtn){
-          submitBtn.disabled = !meets || (confirm && confirm.value !== val);
-          submitBtn.classList.toggle('pw-disabled', submitBtn.disabled);
+          // Do not disable submit; let server-side validation handle errors
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('pw-disabled');
         }
         if(confirm){
           if (val && confirm.value && confirm.value !== val) {
