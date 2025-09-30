@@ -1,6 +1,7 @@
 # Nebula Esports 2025 Tournament Platform
 
-![Nebula Esports](assets/images/nebula-esports.png)
+<img src="assets/images/nebula-esports.png" alt="Nebula Esports" style="width:150px;">
+
 
 A comprehensive web platform for managing esports tournaments, team registrations, and competitive gaming events. Built with PHP, MySQL, and modern web technologies.
 
