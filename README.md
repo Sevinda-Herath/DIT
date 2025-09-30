@@ -269,4 +269,3 @@ For support, bug reports, or feature requests:
 
 ---
 
-*Built with ❤️ for the esports community*
