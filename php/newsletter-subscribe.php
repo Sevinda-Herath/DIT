@@ -32,7 +32,7 @@ try {
     try {
         $upd = $pdo->prepare('UPDATE newsletter_subscriptions SET created_at = CURRENT_TIMESTAMP, ip = ?, user_agent = ? WHERE email = ?');
         $upd->execute([$_SERVER['REMOTE_ADDR'] ?? null, substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255), $email]);
-        store_flash('newsletter', 'You are already subscribed. Preferences updated.');
+        store_flash('newsletter', 'You are already subscribed.');
     } catch (Throwable $e2) {
         store_flash('newsletter', 'Sorry, we could not process your subscription right now.');
     }
