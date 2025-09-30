@@ -149,9 +149,9 @@ DIT/
 | Profile Management | ✅ | ✅ | ✅ | ✅ |
 | Tournament Registration | ✅ | ✅ | ✅ | ✅ |
 | View User Lists | ❌ | ✅ | ✅ | ✅ |
-| Edit User Profiles | ❌ | Limited | ✅ | ✅ |
+| Edit User Profiles | ❌ | ❌ | ✅ | ✅ |
 | User Role Management | ❌ | ❌ | ❌ | ✅ |
-| System Administration | ❌ | ❌ | Limited | ✅ |
+| System Administration | ❌ | ❌ | ❌ | ✅ |
 
 ## 🎮 Supported Games
 
