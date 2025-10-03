@@ -4,9 +4,9 @@ declare(strict_types=1);
 // Configure your MySQL connection here or via environment variables.
 // Ensure the database exists and the user has privileges to CREATE/ALTER tables.
 
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
-define('DB_NAME', getenv('DB_NAME') ?: 'nebula');
+define('DB_HOST', getenv('DB_HOST') ?: '');
+define('DB_PORT', getenv('DB_PORT') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: '');
 // Require DB credentials from environment (no hardcoded defaults)
 $__db_user = getenv('DB_USER');
 if ($__db_user === false || $__db_user === '') {
