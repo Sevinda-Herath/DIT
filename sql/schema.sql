@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` VARCHAR(64) NOT NULL,
   `email` VARCHAR(191) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
+  `role` ENUM('user','head_admin','admin','organizer') NOT NULL DEFAULT 'user',
   `created_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_users_username` (`username`),
@@ -103,4 +104,16 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
   PRIMARY KEY (`id`),
   KEY `idx_created` (`created_at`),
   KEY `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- One-time recovery codes table (generated after signup; codes stored hashed)
+CREATE TABLE IF NOT EXISTS `recovery_codes` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `code_hash` CHAR(64) NOT NULL,
+  `used_at` DATETIME NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_recovery_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `idx_user_used` (`user_id`, `used_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
